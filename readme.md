@@ -1,5 +1,43 @@
 ﻿##A simple api for published Umbraco 6+ content. Made for Ajax queries.
 
+##Using tapasClient.js:
+
+###Get and iterate all children (get all properties):
+
+	tapasClient.getChildren().done(function(children){
+		for (var child in children) {
+			console.log(children[child].Name + "," + children[child].NiceUrl + "," + children[child].CreatorName);
+		}
+	});
+
+###Get and iterate navigation tree (only navigation properties):
+
+    var logChildren = function(children) {
+		for (var child in children) {
+			console.log(children[child].Name + "," + children[child].NiceUrl);
+			logChildren(children[child].Children);
+		}
+	};
+	tapasClient.getNavigationTree().done(logChildren);
+
+
+###TapasClient has the following functions:
+####Returns node/s with all properties:
+* getNode
+* getChildren
+* getParent
+* getAncestors
+* getDescendantsAndSelf
+
+####Returns tree with only navigation properties (Id, NiceUrl, Name and Visible):
+* getNavigationTree
+
+####Parameters (same for all functions):
+* getNode(nodeid:number)
+* getNode(path:string)
+* getNode() use current path
+
+##Using the http api directly:
 Api starts at 
 
 	/umbraco/publishedcontent
