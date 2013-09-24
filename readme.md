@@ -22,14 +22,14 @@
 
 
 ###TapasClient has the following functions:
-####Returns node/s with all properties:
+####Returns (with the promise interface) node/s with all properties:
 * getNode
 * getChildren
 * getParent
 * getAncestors
 * getDescendantsAndSelf
 
-####Returns tree with only navigation properties (Id, NiceUrl, Name and Visible):
+####Returns (with the promise interface) tree with only navigation properties (Id, NiceUrl, Name and Visible):
 * getNavigationTree
 
 ####Parameters (same for all functions):
