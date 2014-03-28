@@ -1,4 +1,4 @@
-﻿##A simple api for published Umbraco 6+ content. Made for Ajax queries.
+﻿##A simple api for published Umbraco 6+ (and 7) content. Made for Ajax queries.
 
 ##Using tapasClient.js:
 
