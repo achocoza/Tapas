@@ -13,6 +13,7 @@ module tapasClient {
         UpdateDate: string;
         ParentId: number;
         ChildIds: number[];
+        Children: UmbracoNode[];
     }
     export interface UmbracoNav {
         Id: number;
@@ -33,6 +34,7 @@ module tapasClient {
             parent: "/node/getparent",
             ancestors: "/nodes/getancestors",
             descendantsAndSelf: "/nodes/getdescendantsandself",
+            descendantsAndSelfFlattened: "/nodes/getdescendantsandselfflattened",
             tree: "/navigation/gettree",
             treeFlattened: "/navigation/gettreeflattened",
             byId: "/",
@@ -67,6 +69,13 @@ module tapasClient {
     export function getDescendantsAndSelf(selector?: any): JQueryPromise<UmbracoNode[]> {
         return getFromApi<UmbracoNode[]>(options.paths.descendantsAndSelf, selector);
     }
+
+    export function getDescendantsAndSelfFlattened(path: string): JQueryPromise<UmbracoNode[]>;
+    export function getDescendantsAndSelfFlattened(id: number): JQueryPromise<UmbracoNode[]>;
+    export function getDescendantsAndSelfFlattened(selector?: any): JQueryPromise<UmbracoNode[]> {
+        return getFromApi<UmbracoNode[]>(options.paths.descendantsAndSelfFlattened, selector);
+    }
+
 
     /**
     *   Get ancestors from current path (no arg), path (string arg) or id (number arg)
@@ -111,4 +120,7 @@ module tapasClient {
     export function getNavigationTreeFlattened(id: number): JQueryPromise<UmbracoNav[]>;
     export function getNavigationTreeFlattened(selector?: any): JQueryPromise<UmbracoNav[]> {
         return getFromApi<UmbracoNode>(options.paths.treeFlattened, selector);
-    }}
+    }
+
+}
+

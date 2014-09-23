@@ -1,6 +1,8 @@
 ﻿using umbraco.NodeFactory;
 using System.Linq;
 using umbraco;
+using System.Collections.Generic;
+using umbraco.interfaces;
 
 namespace Tapas
 {
@@ -22,7 +24,18 @@ namespace Tapas
         {
             return NodeProperties(node, true);
         }
-        public static object NodeProperties(Node node, bool traverseChildren = false)
+        public static List<object> DescendantsAndSelfFlat(Node node)
+        {
+            var nodes = new List<object>();
+            nodes.Add(NodeProperties(node,false));
+            foreach (var child in node.ChildrenAsList)
+            {
+                nodes.AddRange(NodeNavigationFlat(child));
+            }
+            return nodes;
+
+        }
+        public static object NodeProperties(INode node, bool traverseChildren = false)
         {
             return
             new
@@ -44,7 +57,7 @@ namespace Tapas
                 Children = (traverseChildren) ? node.ChildrenAsList.Select(n => NodeProperties(n as Node, traverseChildren)) : node.ChildrenAsList.Select(n => n.Id as object) 
             };
         }
-        public static bool NodeVisible(Node node)
+        public static bool NodeVisible(INode node)
         {
             if (node.HasProperty("umbracoNaviHide")) return !node.GetProperty<bool>("umbracoNaviHide");
             if (node.HasProperty("visible")) return node.GetProperty<bool>("visible");
@@ -52,7 +65,7 @@ namespace Tapas
 
 
         }
-        public static object NodeNavigation(Node node)
+        public static object NodeNavigation(INode node)
         {
             return
             new
@@ -66,9 +79,15 @@ namespace Tapas
             };
         }
 
-        internal static object NodeNavigationFlat(Node node)
+        public static List<object> NodeNavigationFlat(INode node)
         {
-            throw new System.NotImplementedException();
+            var nodes = new List<object>();
+            nodes.Add(NodeNavigation(node));
+            foreach (var child in node.ChildrenAsList)
+            {                
+                nodes.AddRange(NodeNavigationFlat(child));
+            }
+            return nodes;
         }
     }
 }

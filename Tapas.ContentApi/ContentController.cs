@@ -60,10 +60,20 @@ namespace Tapas
             var node = umbraco.uQuery.GetNode(id ?? 0);
             return ContentHelpers.DescendantsAndSelf(node);
         }
+        public object GetDescendantsAndSelfFlattened(int? id = 0)
+        {
+            var node = umbraco.uQuery.GetNode(id ?? 0);
+            return ContentHelpers.DescendantsAndSelfFlat(node);
+        }
         public object GetDescendantsAndSelf(string path)
         {
             var node = umbraco.uQuery.GetNodeByUrl(path);
             return ContentHelpers.DescendantsAndSelf(node);
+        }
+        public object GetDescendantsAndSelfFlattened(string path)
+        {
+            var node = umbraco.uQuery.GetNodeByUrl(path);
+            return ContentHelpers.DescendantsAndSelfFlat(node);
         }
     }
 
