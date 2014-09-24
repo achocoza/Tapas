@@ -13,15 +13,26 @@ namespace Tapas
     public class PublishedNodeSerializer : JsonConverter
     {
         private bool traverseChildren;
-        public PublishedNodeSerializer(bool traverseChildren = false)
+        private bool excludeProtected;
+        private Func<IPublishedContent, bool> hasAccess;
+        public PublishedNodeSerializer(bool traverseChildren = false, bool excludeProtected = true)
         {
             this.traverseChildren = traverseChildren;
+            this.excludeProtected = excludeProtected;
+            if (excludeProtected)
+                hasAccess = new Func<IPublishedContent, bool>(n => (new Umbraco.Web.UmbracoHelper(Umbraco.Web.UmbracoContext.Current)).MemberHasAccess(n.Id, n.Path));
+            else
+                hasAccess = new Func<IPublishedContent, bool>(n => true);
+
         }
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var obj = new JObject();
-            var val = (IPublishedContent)value;
+            if (value == null) return;
 
+            var val = (IPublishedContent)value;
+            if (!hasAccess(val)) return;
+
+            var obj = new JObject();
             obj.Add("Name", JToken.FromObject(val.Name));
             obj.Add("Id", JToken.FromObject(val.Id));
             obj.Add("CreateDate", JToken.FromObject(val.CreateDate));

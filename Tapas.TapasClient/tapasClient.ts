@@ -33,12 +33,10 @@ module tapasClient {
             node: "/node/getnode",
             parent: "/node/getparent",
             ancestors: "/nodes/getancestors",
-            descendantsAndSelf: "/nodes/getdescendantsandself",
-            descendantsAndSelfFlattened: "/nodes/getdescendantsandselfflattened",
-            tree: "/navigation/gettree",
-            treeFlattened: "/navigation/gettreeflattened",
+            descendantsOrSelf: "/nodes/getdescendantsorself",
+            tree: "/node/gettree",
             byId: "/",
-            byPath: "?path="
+            byPath: "?url="
 
         }
 
