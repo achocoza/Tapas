@@ -9,6 +9,7 @@ using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
 using Umbraco;
 using uweb = Umbraco.Web;
+using Newtonsoft.Json;
 
 namespace Tapas
 {
@@ -22,11 +23,11 @@ namespace Tapas
             contentHelpers = new ContentHelpers();
         }
 
-        public JsonFriendlyNode GetNode(int? id = 0)
+        public object GetNode(int? id = 0)
         {
-            return contentHelpers.TapasNode(Umbraco.TypedContent(id ?? 0));
+            return JsonConvert.SerializeObject(Umbraco.TypedContent(id ?? -1),new PublishedNodeSerializer(false));
         }
-        public JsonFriendlyNode GetNode(string url)
+        public object GetNode(string url)
         {
             return GetNode(umbraco.uQuery.GetNodeIdByUrl(url));
         }

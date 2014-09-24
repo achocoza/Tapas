@@ -216,6 +216,7 @@
   <ItemGroup>
     <Compile Include="ContentController.cs" />
     <Compile Include="ContentHelpers.cs" />
+    <Compile Include="IPublishedNodeSerializer.cs" />
     <Compile Include="JsonFriendlyNodeNavigation.cs" />
     <Compile Include="JsonFriendlyNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
