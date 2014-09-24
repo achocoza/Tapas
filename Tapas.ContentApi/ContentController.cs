@@ -15,15 +15,15 @@ namespace Tapas
 {
     public static class Serializer
     {
-        public static string AsJson(this IPublishedContent node, bool traverse = false, bool excludeProtected = true)
+        public static string AsJson(this IPublishedContent node, bool traverse = false, bool excludeProtected = true, bool minimal = false)
         {
             if (node == null) return "";
-            return JsonConvert.SerializeObject(node, new PublishedNodeSerializer(traverse, excludeProtected));
+            return JsonConvert.SerializeObject(node, new PublishedNodeSerializer(traverse, excludeProtected, minimal), new HtmlStringSerializer());
         }
-        public static string AsJson(this IEnumerable<IPublishedContent> node, bool traverse = false, bool excludeProtected = true)
+        public static string AsJson(this IEnumerable<IPublishedContent> node, bool traverse = false, bool excludeProtected = true, bool minimal = false)
         {
             if (node == null) return "";
-            return JsonConvert.SerializeObject(node, new PublishedNodeSerializer(traverse, excludeProtected));
+            return JsonConvert.SerializeObject(node, new PublishedNodeSerializer(traverse, excludeProtected, minimal), new HtmlStringSerializer());
         }
     }
 
@@ -62,11 +62,19 @@ namespace Tapas
         }
         public string GetTree(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).Children.AsJson(true);
+            return Umbraco.TypedContent(id ?? -1).AsJson(true);
         }
         public string GetTree(string url)
         {
             return GetTree(umbraco.uQuery.GetNodeIdByUrl(url));
+        }
+        public string GetNavigationTree(int? id = -1)
+        {
+            return Umbraco.TypedContent(id ?? -1).AsJson(true, minimal: true);
+        }
+        public string GetNavigationTree(string url)
+        {
+            return GetNavigationTree(umbraco.uQuery.GetNodeIdByUrl(url));
         }
         public string GetAncestors(int? id = -1)
         {

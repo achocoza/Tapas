@@ -11,12 +11,11 @@ var tapasClient;
             node: "/node/getnode",
             parent: "/node/getparent",
             ancestors: "/nodes/getancestors",
-            descendantsAndSelf: "/nodes/getdescendantsandself",
-            descendantsAndSelfFlattened: "/nodes/getdescendantsandselfflattened",
-            tree: "/navigation/gettree",
-            treeFlattened: "/navigation/gettreeflattened",
+            descendantsOrSelf: "/nodes/getdescendantsorself",
+            tree: "/nodes/gettree",
+            navigationTree: "/nodes/getnavigationtree",
             byId: "/",
-            byPath: "?path="
+            byPath: "?url="
         }
     };
 
@@ -39,15 +38,10 @@ var tapasClient;
 
     
 
-    function getDescendantsAndSelf(selector) {
-        return getFromApi(tapasClient.options.paths.descendantsAndSelf, selector);
+    function getDescendantsOrSelf(selector) {
+        return getFromApi(tapasClient.options.paths.descendantsOrSelf, selector);
     }
-    tapasClient.getDescendantsAndSelf = getDescendantsAndSelf;
-
-    function getDescendantsAndSelfFlattened(selector) {
-        return getFromApi(tapasClient.options.paths.descendantsAndSelfFlattened, selector);
-    }
-    tapasClient.getDescendantsAndSelfFlattened = getDescendantsAndSelfFlattened;
+    tapasClient.getDescendantsOrSelf = getDescendantsOrSelf;
 
     
 
@@ -72,16 +66,16 @@ var tapasClient;
 
     
 
-    function getNavigationTree(selector) {
+    function getTree(selector) {
         return getFromApi(tapasClient.options.paths.tree, selector);
     }
-    tapasClient.getNavigationTree = getNavigationTree;
+    tapasClient.getTree = getTree;
 
     
 
-    function getNavigationTreeFlattened(selector) {
-        return getFromApi(tapasClient.options.paths.treeFlattened, selector);
+    function getNavigationTree(selector) {
+        return getFromApi(tapasClient.options.paths.navigationTree, selector);
     }
-    tapasClient.getNavigationTreeFlattened = getNavigationTreeFlattened;
+    tapasClient.getNavigationTree = getNavigationTree;
 })(tapasClient || (tapasClient = {}));
 //# sourceMappingURL=tapasClient.js.map

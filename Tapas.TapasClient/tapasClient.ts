@@ -34,7 +34,8 @@ module tapasClient {
             parent: "/node/getparent",
             ancestors: "/nodes/getancestors",
             descendantsOrSelf: "/nodes/getdescendantsorself",
-            tree: "/node/gettree",
+            tree: "/nodes/gettree",
+            navigationTree: "/nodes/getnavigationtree",
             byId: "/",
             byPath: "?url="
 
@@ -62,16 +63,10 @@ module tapasClient {
     /**
     *   Get descandants and self from current path (no arg), path (string arg) or id (number arg)
     */
-    export function getDescendantsAndSelf(path: string): JQueryPromise<UmbracoNode[]>;
-    export function getDescendantsAndSelf(id: number): JQueryPromise<UmbracoNode[]>;
-    export function getDescendantsAndSelf(selector?: any): JQueryPromise<UmbracoNode[]> {
-        return getFromApi<UmbracoNode[]>(options.paths.descendantsAndSelf, selector);
-    }
-
-    export function getDescendantsAndSelfFlattened(path: string): JQueryPromise<UmbracoNode[]>;
-    export function getDescendantsAndSelfFlattened(id: number): JQueryPromise<UmbracoNode[]>;
-    export function getDescendantsAndSelfFlattened(selector?: any): JQueryPromise<UmbracoNode[]> {
-        return getFromApi<UmbracoNode[]>(options.paths.descendantsAndSelfFlattened, selector);
+    export function getDescendantsOrSelf(path: string): JQueryPromise<UmbracoNode[]>;
+    export function getDescendantsOrSelf(id: number): JQueryPromise<UmbracoNode[]>;
+    export function getDescendantsOrSelf(selector?: any): JQueryPromise<UmbracoNode[]> {
+        return getFromApi<UmbracoNode[]>(options.paths.descendantsOrSelf, selector);
     }
 
 
@@ -103,22 +98,23 @@ module tapasClient {
     }
 
     /**
+*   Get full content tree from current path (no arg), path (string arg) or id (number arg)
+*/
+    export function getTree(path: string): JQueryPromise<UmbracoNav>;
+    export function getTree(id: number): JQueryPromise<UmbracoNav>;
+    export function getTree(selector?: any): JQueryPromise<UmbracoNav> {
+        return getFromApi<UmbracoNode>(options.paths.tree, selector);
+    }
+
+    /**
     *   Get full navigation tree from current path (no arg), path (string arg) or id (number arg)
     */
     export function getNavigationTree(path: string): JQueryPromise<UmbracoNav>;
     export function getNavigationTree(id: number): JQueryPromise<UmbracoNav>;
     export function getNavigationTree(selector?: any): JQueryPromise<UmbracoNav> {
-        return getFromApi<UmbracoNode>(options.paths.tree, selector);
+        return getFromApi<UmbracoNode>(options.paths.navigationTree, selector);
     }
 
-    /**
-    *   Get full navigation tree, flattened, from current path (no arg), path (string arg) or id (number arg)
-    */
-    export function getNavigationTreeFlattened(path: string): JQueryPromise<UmbracoNav[]>;
-    export function getNavigationTreeFlattened(id: number): JQueryPromise<UmbracoNav[]>;
-    export function getNavigationTreeFlattened(selector?: any): JQueryPromise<UmbracoNav[]> {
-        return getFromApi<UmbracoNode>(options.paths.treeFlattened, selector);
-    }
 
 }
 
