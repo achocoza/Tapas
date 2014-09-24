@@ -3,99 +3,104 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using umbraco.interfaces;
+using Umbraco.Core.Models;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
+using Umbraco;
+using uweb = Umbraco.Web;
 
 namespace Tapas
 {
+
     [PluginController("PublishedContent")]
     public class NodeController : UmbracoApiController
     {
-        public object GetNode(int? id=0)
-        {            
-            var node = umbraco.uQuery.GetNode(id??0);
-            return ContentHelpers.NodeProperties(node);
-        }
-        public object GetNode(string path)
+        protected ContentHelpers contentHelpers;
+        public NodeController()
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.NodeProperties(node);
+            contentHelpers = new ContentHelpers();
         }
-        public object GetParent(int? id = 0)
+
+        public JsonFriendlyNode GetNode(int? id = 0)
         {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.Parent(node);
+            return contentHelpers.TapasNode(Umbraco.TypedContent(id ?? 0));
         }
-        public object GetParent(string path)
+        public JsonFriendlyNode GetNode(string url)
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.Parent(node);
+            return GetNode(umbraco.uQuery.GetNodeIdByUrl(url));
+        }
+        public JsonFriendlyNode GetParent(int? id = 0)
+        {
+            return contentHelpers.TapasNode(Umbraco.TypedContent(id ?? 0).Parent);
+        }
+        public JsonFriendlyNode GetParent(string url)
+        {
+            return GetParent(umbraco.uQuery.GetNodeIdByUrl(url));
         }
     }
     [PluginController("PublishedContent")]
     public class NodesController : UmbracoApiController
     {
-        public object GetChildren(int? id = 0)
+        protected ContentHelpers contentHelpers;
+        public NodesController()
         {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.Children(node);
+            contentHelpers = new ContentHelpers();
         }
-        public object GetChildren(string path)
+
+
+        public IEnumerable<JsonFriendlyNode> GetChildren(int? id = 0)
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.Children(node);
+            return contentHelpers.TapasNodes(Umbraco.TypedContent(id ?? 0).Children);
         }
-        public object GetAncestors(int? id = 0)
+        public IEnumerable<JsonFriendlyNode> GetChildren(string url)
         {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.Ancestors(node);
+            return GetChildren(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetAncestors(string path)
+        public IEnumerable<JsonFriendlyNode> GetAncestors(int? id = 0)
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.Ancestors(node);
+            return contentHelpers.TapasNodes(uweb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? 0)));
         }
-        public object GetDescendantsAndSelf(int? id = 0)
+        public IEnumerable<JsonFriendlyNode> GetAncestors(string url)
         {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.DescendantsAndSelf(node);
+            return GetAncestors(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetDescendantsAndSelfFlattened(int? id = 0)
+        public IEnumerable<JsonFriendlyNode> GetDescendantsOrSelf(int? id = 0)
         {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.DescendantsAndSelfFlat(node);
+            return contentHelpers.TapasNodes(uweb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? 0)));
         }
-        public object GetDescendantsAndSelf(string path)
+        public IEnumerable<JsonFriendlyNode> GetDescendantsOrSelf(string url)
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.DescendantsAndSelf(node);
-        }
-        public object GetDescendantsAndSelfFlattened(string path)
-        {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.DescendantsAndSelfFlat(node);
+            return GetDescendantsOrSelf(umbraco.uQuery.GetNodeIdByUrl(url));
         }
     }
 
     [PluginController("PublishedContent")]
     public class NavigationController : UmbracoApiController
     {
+        protected ContentHelpers contentHelpers;
+        public NavigationController()
+        {
+            contentHelpers = new ContentHelpers();
+        }
+
+
         public object GetTree(int? id = 0)
         {
             var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.NodeNavigation(node);
+            return contentHelpers.NodeNavigation((IPublishedContent)node);
         }
         public object GetTree(string path)
         {
             var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.NodeNavigation(node);
+            return contentHelpers.NodeNavigation((IPublishedContent)node);
         }
         public object GetTreeFlattened(int? id = 0)
         {
             var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.NodeNavigationFlat(node);
+            return contentHelpers.NodeNavigationFlat((IPublishedContent)node);
         }
-        
+
     }
 
 }

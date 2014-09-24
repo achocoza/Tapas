@@ -3,88 +3,150 @@ using System.Linq;
 using umbraco;
 using System.Collections.Generic;
 using umbraco.interfaces;
+using System;
+using Umbraco.Core.Models;
+using Umbraco;
 
 namespace Tapas
 {
     public class ContentHelpers
     {
-        public static object Children(Node node)
+
+        public Umbraco.Web.UmbracoHelper CurrentUmbracoHelper()
         {
-            return node.ChildrenAsList.Select(n => NodeProperties(n as Node));
+            return new Umbraco.Web.UmbracoHelper(Umbraco.Web.UmbracoContext.Current);
         }
-        public static object Parent(Node node)
+        public IEnumerable<JsonFriendlyNode> Children(IPublishedContent node)
         {
-            return NodeProperties(node.Parent as Node);
+            return node.Children.Select(n => TapasNode(n));
         }
-        public static object Ancestors(Node node)
+        public JsonFriendlyNode Parent(IPublishedContent node)
         {
-            return node.GetAncestorNodes().Select(n => NodeProperties(n));
+            return TapasNode(node.Parent);
         }
-        public static object DescendantsAndSelf(Node node)
+        //public IEnumerable<JsonFriendlyNode> Ancestors(IPublishedContent node)
+        //{
+        //    //return node.GetAncestorNodes().Select(n => NodeProperties(n));
+        //}
+        public JsonFriendlyNode DescendantsAndSelf(IPublishedContent node)
         {
-            return NodeProperties(node, true);
+            return TapasNode(node, true);
         }
-        public static List<object> DescendantsAndSelfFlat(Node node)
+        public List<JsonFriendlyNode> DescendantsAndSelfFlat(IPublishedContent node)
         {
-            var nodes = new List<object>();
-            nodes.Add(NodeProperties(node,false));
-            foreach (var child in node.ChildrenAsList)
+            var nodes = new List<JsonFriendlyNode>();
+
+            if (node == null || !CurrentUmbracoHelper().MemberHasAccess(node.Id, node.Path)) return nodes;
+
+            nodes.Add(TapasNode(node, false));
+            foreach (var child in node.Children)
             {
-                nodes.AddRange(NodeNavigationFlat(child));
+                nodes.AddRange(DescendantsAndSelfFlat(child));
             }
             return nodes;
 
         }
-        public static object NodeProperties(INode node, bool traverseChildren = false)
+
+        public IEnumerable<JsonFriendlyNode> Flatten(JsonFriendlyNode node)
         {
-            return
-            new
+            var jsonNodes = new List<JsonFriendlyNode>();
+            jsonNodes.Add(node);
+            foreach (var child in node.ChildrenNodes)
             {
-                node.Id,
-                node.Level,
-                node.NiceUrl,
-                node.Name,
-                node.SortOrder,
-                node.UrlName,
-                node.NodeTypeAlias,
-                node.CreatorName,
-                Template = node.template,
-                /*Template = template.Alias,*/
-                Properties = node.PropertiesAsList.Select(p => new { p.Alias, Value = p.Value }).ToDictionary(k => k.Alias, k => k.Value),
-                node.CreateDate,
-                node.UpdateDate,
-                ParentId = (node.Parent != null) ? node.Parent.Id : -1,
-                Children = (traverseChildren) ? node.ChildrenAsList.Select(n => NodeProperties(n as Node, traverseChildren)) : node.ChildrenAsList.Select(n => n.Id as object) 
-            };
+                jsonNodes.Add(child);
+                jsonNodes.AddRange(Flatten(child));
+            }
+            return jsonNodes;
         }
-        public static bool NodeVisible(INode node)
+
+        public IEnumerable<JsonFriendlyNode> Flatten(IEnumerable<JsonFriendlyNode> nodes)
         {
-            if (node.HasProperty("umbracoNaviHide")) return !node.GetProperty<bool>("umbracoNaviHide");
-            if (node.HasProperty("visible")) return node.GetProperty<bool>("visible");
+            var jsonNodes = (List<JsonFriendlyNode>)nodes;
+            foreach (var node in nodes)
+            {
+                jsonNodes.Add(node);
+                foreach (var child in node.ChildrenNodes)
+                {
+                    jsonNodes.Add(child);
+                    jsonNodes.AddRange(Flatten(child));
+                }
+            }
+            return jsonNodes;
+        }
+
+        public IEnumerable<JsonFriendlyNode> TapasNodes(IEnumerable<IPublishedContent> nodes)
+        {
+            var jsonNodes = new List<JsonFriendlyNode>();
+            foreach (var node in nodes)
+            {
+                var jsonFriendly = TapasNode(node, true);
+                if (jsonFriendly != null) jsonNodes.Add(jsonFriendly);
+            }
+            return jsonNodes;
+        }
+        public JsonFriendlyNode TapasNode(IPublishedContent node, bool traverseChildren = false)
+        {
+
+            if (node == null || !CurrentUmbracoHelper().MemberHasAccess(node.Id, node.Path)) return null;
+
+            return new JsonFriendlyNode
+            {
+                Id = node.Id,
+                CreateDate = node.CreateDate,
+                CreatorName = node.CreatorName,
+                Level = node.Level,
+                Name = node.Name,
+                DocumentTypeAlias = node.DocumentTypeAlias,
+                ParentId = (node.Parent != null) ? node.Parent.Id : -1,
+                Path = node.Path,
+                SortOrder = node.SortOrder,
+                TemplateId = node.TemplateId,
+                UpdateDate = node.UpdateDate,
+                Url = node.Url,
+                UrlName = node.UrlName,
+                Version = node.Version,
+                WriterId = node.WriterId,
+                WriterName = node.WriterName,
+                Properties = node.Properties.Select(p => new { p.PropertyTypeAlias, Value = p.Value }).ToDictionary(k => k.PropertyTypeAlias, k => k.Value),
+                ChildrenIds = node.Children.Select(n => n.Id),
+                ChildrenNodes = (traverseChildren) ? node.Children.Select(n => TapasNode(n, traverseChildren)) : null
+
+            };
+
+        }
+        public bool NodeVisible(IPublishedContent node)
+        {
+            if (node.GetProperty("umbracoNaviHide") != null) return !(bool)node.GetProperty("umbracoNaviHide").Value;
+            if (node.GetProperty("visible") != null) return (bool)node.GetProperty("visible").Value;
             return false;
 
 
         }
-        public static object NodeNavigation(INode node)
+        public JsonFriendlyNodeNavigation NodeNavigation(IPublishedContent node)
         {
-            return
-            new
+
+            if (!CurrentUmbracoHelper().MemberHasAccess(node.Id, node.Path)) return null;
+
+            return new JsonFriendlyNodeNavigation
             {
-                node.NiceUrl,
-                node.Name,
+
+                Url = node.Url,
+                Name = node.Name,
                 Visible = NodeVisible(node),
-                node.Id,
-                node.UrlName,
-                Children = node.ChildrenAsList.Select(n => NodeNavigation(n as Node))
+                Id = node.Id,
+                UrlName = node.UrlName,
+                Children = node.Children.Select(n => NodeNavigation(n))
             };
         }
-
-        public static List<object> NodeNavigationFlat(INode node)
+        public IEnumerable<JsonFriendlyNodeNavigation> NodeNavigationFlat(IPublishedContent node)
         {
-            var nodes = new List<object>();
+            var nodes = new List<JsonFriendlyNodeNavigation>();
+
+            if (!(CurrentUmbracoHelper().MemberHasAccess(node.Id, node.Path))) return nodes;
+
             nodes.Add(NodeNavigation(node));
-            foreach (var child in node.ChildrenAsList)
-            {                
+            foreach (var child in node.Children)
+            {
                 nodes.AddRange(NodeNavigationFlat(child));
             }
             return nodes;
