@@ -1,4 +1,4 @@
-var tapasClient;
+﻿var tapasClient;
 (function (tapasClient) {
     function getCurrentPath() {
         return window.location.pathname;
@@ -16,16 +16,33 @@ var tapasClient;
             navigationTree: "/nodes/getnavigationtree",
             byId: "/",
             byPath: "?url="
-        }
+        },
+        async: true
     };
 
+    // JQueryPromise<T>
     function getFromApi(resource, selector) {
+        var ajaxCall = function (path) {
+            if (async)
+                return $.getJSON(path);
+            else {
+                var result = {};
+                $.ajax({
+                    url: tapasClient.options.paths.root + resource + tapasClient.options.paths.byId + selector, dataType: "json", success: function (data) {
+                        return result = data;
+                    }
+                });
+                return result;
+            }
+        };
+
         if (typeof selector == "number") {
-            return $.getJSON(tapasClient.options.paths.root + resource + tapasClient.options.paths.byId + selector);
+            return ajaxCall(tapasClient.options.paths.root + resource + tapasClient.options.paths.byId + selector);
         }
         if (!selector)
             selector = getCurrentPath();
-        return $.getJSON(tapasClient.options.paths.root + resource + tapasClient.options.paths.byPath + selector);
+
+        return ajaxCall(tapasClient.options.paths.root + resource + tapasClient.options.paths.byPath + selector);
     }
     tapasClient.getFromApi = getFromApi;
 

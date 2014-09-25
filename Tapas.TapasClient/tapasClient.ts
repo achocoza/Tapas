@@ -39,16 +39,31 @@ module tapasClient {
             byId: "/",
             byPath: "?url="
 
-        }
+        },
+        async: true
 
     }
+    // JQueryPromise<T>
+    export function getFromApi<T>(resource: string, selector?: any): any {
 
-    export function getFromApi<T>(resource: string, selector?: any): JQueryPromise<T> {
+        var ajaxCall = function (path) {
+            if (async)
+                return $.getJSON(path);
+            else {
+                var result = {};
+                $.ajax({
+                    url: options.paths.root + resource + options.paths.byId + selector, dataType: "json", success: (data) => result = data
+                });
+                return result;
+            }
+        }
+
         if (typeof selector == "number") {
-            return $.getJSON(options.paths.root + resource + options.paths.byId + selector);
+            return ajaxCall(options.paths.root + resource + options.paths.byId + selector);
         }
         if (!selector) selector = getCurrentPath();
-        return $.getJSON(options.paths.root + resource + options.paths.byPath + selector);
+
+        return ajaxCall(options.paths.root + resource + options.paths.byPath + selector);
     }
 
     /**
