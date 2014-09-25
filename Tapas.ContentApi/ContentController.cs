@@ -3,99 +3,116 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using umbraco.interfaces;
+using Umbraco.Core.Models;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
+using Umbraco;
+using uweb = Umbraco.Web;
+using Newtonsoft.Json;
 
 namespace Tapas
 {
+    public static class Serializer
+    {
+        public static string AsJson(this IPublishedContent node, bool traverse = false, bool excludeProtected = true, bool minimal = false)
+        {
+            if (node == null) return "";
+            return JsonConvert.SerializeObject(node, new PublishedNodeSerializer(traverse, excludeProtected, minimal), new HtmlStringSerializer());
+        }
+        public static string AsJson(this IEnumerable<IPublishedContent> node, bool traverse = false, bool excludeProtected = true, bool minimal = false)
+        {
+            if (node == null) return "";
+            return JsonConvert.SerializeObject(node, new PublishedNodeSerializer(traverse, excludeProtected, minimal), new HtmlStringSerializer());
+        }
+    }
+
     [PluginController("PublishedContent")]
     public class NodeController : UmbracoApiController
     {
-        public object GetNode(int? id=0)
-        {            
-            var node = umbraco.uQuery.GetNode(id??0);
-            return ContentHelpers.NodeProperties(node);
-        }
-        public object GetNode(string path)
+
+        public string GetNode(int? id = -1)
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.NodeProperties(node);
+            return Umbraco.TypedContent(id ?? -1).AsJson();
         }
-        public object GetParent(int? id = 0)
+        public string GetNode(string url)
         {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.Parent(node);
+            return GetNode(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetParent(string path)
+        public string GetParent(int? id = -1)
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.Parent(node);
+            return Umbraco.TypedContent(id ?? -1).Parent.AsJson();
+        }
+        public string GetParent(string url)
+        {
+            return GetParent(umbraco.uQuery.GetNodeIdByUrl(url));
         }
     }
     [PluginController("PublishedContent")]
     public class NodesController : UmbracoApiController
     {
-        public object GetChildren(int? id = 0)
+
+        public string GetChildren(int? id = -1)
         {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.Children(node);
+            return Umbraco.TypedContent(id ?? -1).Children.AsJson();
         }
-        public object GetChildren(string path)
+        public string GetChildren(string url)
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.Children(node);
+            return GetChildren(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetAncestors(int? id = 0)
+        public string GetTree(int? id = -1)
         {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.Ancestors(node);
+            return Umbraco.TypedContent(id ?? -1).AsJson(true);
         }
-        public object GetAncestors(string path)
+        public string GetTree(string url)
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.Ancestors(node);
+            return GetTree(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetDescendantsAndSelf(int? id = 0)
+        public string GetNavigationTree(int? id = -1)
         {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.DescendantsAndSelf(node);
+            return Umbraco.TypedContent(id ?? -1).AsJson(true, minimal: true);
         }
-        public object GetDescendantsAndSelfFlattened(int? id = 0)
+        public string GetNavigationTree(string url)
         {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.DescendantsAndSelfFlat(node);
+            return GetNavigationTree(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetDescendantsAndSelf(string path)
+        public string GetAncestors(int? id = -1)
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.DescendantsAndSelf(node);
+            return uweb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).AsJson();
         }
-        public object GetDescendantsAndSelfFlattened(string path)
+        public string GetAncestors(string url)
         {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.DescendantsAndSelfFlat(node);
+            return GetAncestors(umbraco.uQuery.GetNodeIdByUrl(url));
+        }
+        public string GetDescendantsOrSelf(int? id = -1)
+        {
+            return uweb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJson();
+        }
+        public string GetDescendantsOrSelf(string url)
+        {
+            return GetDescendantsOrSelf(umbraco.uQuery.GetNodeIdByUrl(url));
         }
     }
 
-    [PluginController("PublishedContent")]
-    public class NavigationController : UmbracoApiController
-    {
-        public object GetTree(int? id = 0)
-        {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.NodeNavigation(node);
-        }
-        public object GetTree(string path)
-        {
-            var node = umbraco.uQuery.GetNodeByUrl(path);
-            return ContentHelpers.NodeNavigation(node);
-        }
-        public object GetTreeFlattened(int? id = 0)
-        {
-            var node = umbraco.uQuery.GetNode(id ?? 0);
-            return ContentHelpers.NodeNavigationFlat(node);
-        }
-        
-    }
+    //[PluginController("PublishedContent")]
+    //public class NavigationController : UmbracoApiController
+    //{
+    //    public object GetTree(int? id = 0)
+    //    {
+    //        var node = umbraco.uQuery.GetNode(id ?? 0);
+    //        return contentHelpers.NodeNavigation((IPublishedContent)node);
+    //    }
+    //    public object GetTree(string path)
+    //    {
+    //        var node = umbraco.uQuery.GetNodeByUrl(path);
+    //        return contentHelpers.NodeNavigation((IPublishedContent)node);
+    //    }
+    //    public object GetTreeFlattened(int? id = 0)
+    //    {
+    //        var node = umbraco.uQuery.GetNode(id ?? 0);
+    //        return contentHelpers.NodeNavigationFlat((IPublishedContent)node);
+    //    }
+
+    //}
 
 }

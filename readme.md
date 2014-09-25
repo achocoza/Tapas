@@ -10,6 +10,8 @@
 		}
 	});
 
+	$.ajax({url:"/umbraco/publishedcontent/nodes/getchildren"}).done(...)
+
 ###Get and iterate navigation tree (only navigation properties):
 
     var logChildren = function(children) {
@@ -20,6 +22,9 @@
 	};
 	tapasClient.getNavigationTree().done(logChildren);
 
+	$.ajax({url:"/umbraco/publishedcontent/nodes/getnavigationtree"}).done(...)
+
+
 
 ###TapasClient has the following functions:
 ####Returns (with the promise interface) node/s with all properties:
@@ -27,7 +32,7 @@
 * getChildren
 * getParent
 * getAncestors
-* getDescendantsAndSelf
+* getDescendantsOrSelf
 
 ####Returns (with the promise interface) tree with only navigation properties (Id, NiceUrl, Name and Visible):
 * getNavigationTree
@@ -63,28 +68,32 @@ All requests must be as GET and as application/json (so you'll need fiddler/curl
 
 ###Returns hierarchy of nodes:
 
-	/nodes/getdescendantsandself/{id}
-	/nodes/getdescendantsandself?path=...
+	/nodes/getdescendantsorself/{id}
+	/nodes/getdescendantsorself?path=...
 
 
 ###Returns navigation tree (only name, url, id & visible) of nodes:
 
-	/navigation/gettree/{id}
-	/navigation/gettree?path=...
+	/nodes/getnavigationtree/{id}
+	/nodes/getnavigationtree?path=...
 
 
 ###Node format for single node
 
 	{
 		"Id": 1087,
-		"Level": 3,
-		"NiceUrl": "/foo/bar/",
 		"Name": "Bar",
+		"Url": "/foo/bar/",
+		"Visible": true,
+		"CreateDate": "2013-09-20T06:27:16",
+		"UpdateDate": "2013-09-20T06:35:25",
+		"Level": 3,
 		"SortOrder": 3,
 		"UrlName": "bar",
-		"NodeTypeAlias": "content",
-		"CreatorName": "admin",
-		"Template": 1093,
+		"DocumentTypeAlias": "content",
+		"WriterId": 0,
+		"WriterName": "admin",
+		"TemplateId": 1093,
 		"Properties": {
 			"umbracoNaviHide": "0",
 			"contactPerson": "",
@@ -94,8 +103,6 @@ All requests must be as GET and as application/json (so you'll need fiddler/curl
 			"header": "",
 			"introduction": ""
 		},
-		"CreateDate": "2013-09-20T06:27:16",
-		"UpdateDate": "2013-09-20T06:35:25",
 		"ParentId": 1086,
 		"ChildIds": [1089,1090]
 	}
