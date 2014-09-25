@@ -87,7 +87,7 @@ namespace Tapas
             obj.Add("Url", JToken.FromObject(node.Url));
 
             var isVisible = true;
-            if (node.GetProperty("umbNaviHide") != null && (bool)node.GetProperty("umbNaviHide").Value) isVisible = false;
+            if (node.GetProperty("umbracoNaviHide") != null && (bool)node.GetProperty("umbracoNaviHide").Value) isVisible = false;
 
             obj.Add("Visible", JToken.FromObject(isVisible));
 
