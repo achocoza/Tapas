@@ -1,4 +1,4 @@
-var tapasClient;
+﻿var tapasClient;
 (function (tapasClient) {
     function getCurrentPath() {
         return window.location.pathname;
@@ -39,7 +39,9 @@ var tapasClient;
     function loadContentArray(path) {
         if (typeof path === "undefined") { path = "/"; }
         var start = new Date().getTime();
-        getDescendantsOrSelf(path).done(function (result) {
+        var promise = getDescendantsOrSelf(path);
+
+        promise.done(function (result) {
             tapasClient.contentArray = result;
             var end = new Date().getTime();
             var spentMilliseconds = end - start;
@@ -47,8 +49,41 @@ var tapasClient;
             console.log("Content array loaded (load time " + spentMilliseconds + "ms) and available on tapasClient.contentArray");
             console.log(tapasClient.contentArray);
         });
+        return promise;
     }
     tapasClient.loadContentArray = loadContentArray;
+
+    function arraySearch(searchString) {
+        if (typeof tapasClient.contentArray == "undefined")
+            console.log("Nothing to do. You need to load the contentArray first (tapasClient.loadContentArray)");
+        else {
+            var result = tapasClient.contentArray.filter(function (item) {
+                if (item.Name.indexOf(searchString) != -1) {
+                    item._searchScore = 10;
+                    return true;
+                }
+
+                if (item.Properties)
+                    for (var prop in item.Properties) {
+                        if (item.Properties[prop] != null && item.Properties[prop].toString().indexOf(searchString) != -1) {
+                            item._searchScore = 1;
+                            return true;
+                        }
+                    }
+            });
+
+            var sortedResult = result.sort(function (a, b) {
+                if (a._searchScore > b._searchScore)
+                    return -1;
+                if (a._searchScore == b._searchScore && a.UpdateDate > b.UpdateDate)
+                    return -1;
+                return 1;
+            });
+
+            return result;
+        }
+    }
+    tapasClient.arraySearch = arraySearch;
 
     // JQueryPromise<T>
     function getFromApi(resource, selector) {

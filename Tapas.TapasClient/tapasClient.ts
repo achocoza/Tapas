@@ -60,7 +60,9 @@ module tapasClient {
     }
     export function loadContentArray(path= "/") {
         var start = new Date().getTime();
-        getDescendantsOrSelf(path).done((result: any) => {
+        var promise = getDescendantsOrSelf(path);
+
+        promise.done((result: any) => {
             contentArray = result;
             var end = new Date().getTime();
             var spentMilliseconds = end - start;
@@ -68,6 +70,42 @@ module tapasClient {
             console.log("Content array loaded (load time " + spentMilliseconds + "ms) and available on tapasClient.contentArray");
             console.log(contentArray);
         });
+        return promise;
+    }
+
+    export function arraySearch(searchString: string) {        
+
+        if (typeof contentArray == "undefined")
+            console.log("Nothing to do. You need to load the contentArray first (tapasClient.loadContentArray)");            
+        else {
+
+            var result = contentArray.filter((item) => {
+
+                if (item.Name.indexOf(searchString) != -1) {
+                    item._searchScore = 10;
+                    return true;
+                }
+
+                if (item.Properties)
+                    for (var prop in item.Properties) {
+                        if (item.Properties[prop] != null && item.Properties[prop].toString().indexOf(searchString) != -1) {
+                            item._searchScore = 1;
+                            return true;
+                        }
+                    }
+
+            });
+
+            var sortedResult = result.sort((a, b) => {
+                if (a._searchScore > b._searchScore) return -1;
+                if (a._searchScore == b._searchScore && a.UpdateDate > b.UpdateDate) return -1;
+                return 1;
+            });
+
+            return result;
+
+        }
+
     }
 
     // JQueryPromise<T>
