@@ -103,6 +103,8 @@ module tapasClient {
 
             var result = contentArray.filter((item) => {
 
+                if (typeof item.Name == "undefined") return false;
+
                 if (item.Name.indexOf(searchString) != -1) {
                     item._searchScore = 10;
                     return true;

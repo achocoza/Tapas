@@ -79,6 +79,9 @@
             console.log("Nothing to do. You need to load the contentArray first (tapasClient.loadContentArray)");
         else {
             var result = tapasClient.contentArray.filter(function (item) {
+                if (typeof item.Name == "undefined")
+                    return false;
+
                 if (item.Name.indexOf(searchString) != -1) {
                     item._searchScore = 10;
                     return true;
