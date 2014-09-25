@@ -13,37 +13,24 @@ using Newtonsoft.Json;
 
 namespace Tapas
 {
-    public static class Serializer
-    {
-        public static string AsJson(this IPublishedContent node, bool traverse = false, bool excludeProtected = true, bool minimal = false)
-        {
-            if (node == null) return "";
-            return JsonConvert.SerializeObject(node, new PublishedNodeSerializer(traverse, excludeProtected, minimal), new HtmlStringSerializer());
-        }
-        public static string AsJson(this IEnumerable<IPublishedContent> node, bool traverse = false, bool excludeProtected = true, bool minimal = false)
-        {
-            if (node == null) return "";
-            return JsonConvert.SerializeObject(node, new PublishedNodeSerializer(traverse, excludeProtected, minimal), new HtmlStringSerializer());
-        }
-    }
 
     [PluginController("PublishedContent")]
     public class NodeController : UmbracoApiController
     {
 
-        public string GetNode(int? id = -1)
+        public object GetNode(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).AsJson();
+            return Umbraco.TypedContent(id ?? -1).AsJObject();
         }
-        public string GetNode(string url)
+        public object GetNode(string url)
         {
             return GetNode(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public string GetParent(int? id = -1)
+        public object GetParent(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).Parent.AsJson();
+            return Umbraco.TypedContent(id ?? -1).Parent.AsJObject();
         }
-        public string GetParent(string url)
+        public object GetParent(string url)
         {
             return GetParent(umbraco.uQuery.GetNodeIdByUrl(url));
         }
@@ -52,43 +39,43 @@ namespace Tapas
     public class NodesController : UmbracoApiController
     {
 
-        public string GetChildren(int? id = -1)
+        public object GetChildren(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).Children.AsJson();
+            return Umbraco.TypedContent(id ?? -1).Children.AsJArray();
         }
-        public string GetChildren(string url)
+        public object GetChildren(string url)
         {
             return GetChildren(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public string GetTree(int? id = -1)
+        public object GetTree(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).AsJson(true);
+            return Umbraco.TypedContent(id ?? -1).AsJObject(true);
         }
-        public string GetTree(string url)
+        public object GetTree(string url)
         {
             return GetTree(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public string GetNavigationTree(int? id = -1)
+        public object GetNavigationTree(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).AsJson(true, minimal: true);
+            return Umbraco.TypedContent(id ?? -1).AsJObject(true, minimal: true);
         }
-        public string GetNavigationTree(string url)
+        public object GetNavigationTree(string url)
         {
             return GetNavigationTree(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public string GetAncestors(int? id = -1)
+        public object GetAncestors(int? id = -1)
         {
-            return uweb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).AsJson();
+            return uweb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).AsJArray();
         }
-        public string GetAncestors(string url)
+        public object GetAncestors(string url)
         {
             return GetAncestors(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public string GetDescendantsOrSelf(int? id = -1)
+        public object GetDescendantsOrSelf(int? id = -1)
         {
-            return uweb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJson();
+            return uweb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJArray();
         }
-        public string GetDescendantsOrSelf(string url)
+        public object GetDescendantsOrSelf(string url)
         {
             return GetDescendantsOrSelf(umbraco.uQuery.GetNodeIdByUrl(url));
         }

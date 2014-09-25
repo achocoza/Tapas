@@ -1,4 +1,4 @@
-﻿var tapasClient;
+var tapasClient;
 (function (tapasClient) {
     function getCurrentPath() {
         return window.location.pathname;
@@ -20,10 +20,40 @@
         async: true
     };
 
+    tapasClient.contentTree;
+    tapasClient.contentArray;
+
+    function loadContentTree(path) {
+        if (typeof path === "undefined") { path = "/"; }
+        var start = new Date().getTime();
+        getTree(path).done(function (result) {
+            tapasClient.contentTree = result;
+            var end = new Date().getTime();
+            var spentMilliseconds = end - start;
+
+            console.log("Content tree loaded (load time " + spentMilliseconds + "ms) and available on tapasClient.contentTree");
+            console.log(tapasClient.contentTree);
+        });
+    }
+    tapasClient.loadContentTree = loadContentTree;
+    function loadContentArray(path) {
+        if (typeof path === "undefined") { path = "/"; }
+        var start = new Date().getTime();
+        getDescendantsOrSelf(path).done(function (result) {
+            tapasClient.contentArray = result;
+            var end = new Date().getTime();
+            var spentMilliseconds = end - start;
+
+            console.log("Content array loaded (load time " + spentMilliseconds + "ms) and available on tapasClient.contentArray");
+            console.log(tapasClient.contentArray);
+        });
+    }
+    tapasClient.loadContentArray = loadContentArray;
+
     // JQueryPromise<T>
     function getFromApi(resource, selector) {
         var ajaxCall = function (path) {
-            if (async)
+            if (tapasClient.options.async)
                 return $.getJSON(path);
             else {
                 var result = {};
