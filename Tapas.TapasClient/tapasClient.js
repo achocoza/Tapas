@@ -53,6 +53,27 @@
     }
     tapasClient.loadContentArray = loadContentArray;
 
+    function attachArraySearch(inputDomObject, resultDomObject) {
+        loadContentArray();
+        var content = "";
+
+        inputDomObject.keyup(function () {
+            if (inputDomObject.val() != content) {
+                content = inputDomObject.val();
+                var ul = $("<ul>");
+
+                var result = arraySearch(content);
+                for (var i in result) {
+                    var res = result[i];
+                    ul.append("<li><a href='" + res.Url + "'>" + res.Name + "</a></li>");
+                }
+
+                resultDomObject.html(ul);
+            }
+        });
+    }
+    tapasClient.attachArraySearch = attachArraySearch;
+
     function arraySearch(searchString) {
         if (typeof tapasClient.contentArray == "undefined")
             console.log("Nothing to do. You need to load the contentArray first (tapasClient.loadContentArray)");

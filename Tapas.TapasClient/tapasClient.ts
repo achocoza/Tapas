@@ -73,6 +73,28 @@ module tapasClient {
         return promise;
     }
 
+    export function attachArraySearch(inputDomObject, resultDomObject) {
+
+        loadContentArray();        
+        var content = "";
+
+        inputDomObject.keyup(function () {
+            if (inputDomObject.val() != content) {
+
+                content = inputDomObject.val();                
+                var ul = $("<ul>");
+
+                var result = arraySearch(content);
+                for (var i in result) {
+                    var res = result[i];
+                    ul.append("<li><a href='" + res.Url + "'>" + res.Name + "</a></li>");
+                }
+
+                resultDomObject.html(ul);
+            }
+        });   
+    }
+
     export function arraySearch(searchString: string) {        
 
         if (typeof contentArray == "undefined")
