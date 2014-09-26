@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using umbraco.interfaces;
 using Umbraco.Core.Models;
+using Umbraco.Web;
 
 namespace Tapas
 {
@@ -17,7 +18,7 @@ namespace Tapas
         private PublishedNodeSerializer publishedNodeSerializer;
         public Serializer(bool traverseChildren = false, bool excludeProtected = true, bool onlyIncludeNameIdAndUrl = false, params JsonConverter[] additionalConverters)
         {
-            jsonSerializer = JsonSerializer.CreateDefault();
+            jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings());
             publishedNodeSerializer = new PublishedNodeSerializer(traverseChildren, excludeProtected, onlyIncludeNameIdAndUrl);
             jsonSerializer.Converters.Add(publishedNodeSerializer);
 
@@ -87,7 +88,7 @@ namespace Tapas
             obj.Add("Url", JToken.FromObject(node.Url));
 
             var isVisible = true;
-            if (node.GetProperty("umbracoNaviHide") != null && (bool)node.GetProperty("umbracoNaviHide").Value) isVisible = false;
+            if (node.HasProperty("umbracoNaviHide") && node.GetPropertyValue<bool>("umbracoNaviHide")) isVisible = false;
 
             obj.Add("Visible", JToken.FromObject(isVisible));
 
