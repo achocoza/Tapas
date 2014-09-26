@@ -17,7 +17,7 @@ namespace Tapas
         private PublishedNodeSerializer publishedNodeSerializer;
         public Serializer(bool traverseChildren = false, bool excludeProtected = true, bool onlyIncludeNameIdAndUrl = false, params JsonConverter[] additionalConverters)
         {
-            jsonSerializer = JsonSerializer.CreateDefault();
+            jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings());
             publishedNodeSerializer = new PublishedNodeSerializer(traverseChildren, excludeProtected, onlyIncludeNameIdAndUrl);
             jsonSerializer.Converters.Add(publishedNodeSerializer);
 
