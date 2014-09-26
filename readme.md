@@ -1,18 +1,18 @@
-﻿##A simple api for published Umbraco 6+ (and 7) content. Made for Ajax queries.
+A simple api for published Umbraco 6+ (and 7) content. Made for Ajax queries.
 
-##Using tapasClient.js:
+Using tapasClient.js:
 
-###Get and iterate all children (get all properties):
+Get and iterate all content
 
-	tapasClient.getChildren().done(function(children){
+	tapasClient.getDescendantsAndSelf().done(function(children){
 		for (var child in children) {
-			console.log(children[child].Name + "," + children[child].NiceUrl + "," + children[child].CreatorName);
+			console.log(children[child].Name + "," + children[child].Url);
 		}
 	});
 
-	$.ajax({url:"/umbraco/publishedcontent/nodes/getchildren"}).done(...)
+	$.ajax({url:"/umbraco/publishedcontent/nodes/getdescendantsandself"}).done(...)
 
-###Get and iterate navigation tree (only navigation properties):
+Get and iterate navigation tree (only navigation properties):
 
     var logChildren = function(children) {
 		for (var child in children) {
@@ -32,7 +32,7 @@
 * getChildren
 * getParent
 * getAncestors
-* getDescendantsOrSelf
+* getDescendantsAndSelf
 
 ####Returns (with the promise interface) tree with only navigation properties (Id, NiceUrl, Name and Visible):
 * getNavigationTree
@@ -52,30 +52,30 @@ All requests must be as GET and as application/json (so you'll need fiddler/curl
 ###Returns a single node:
 
 	/node/getnode/{id} : gets node by id
-	/node/getnode?path=.. : gets node by path
+	/node/getnode?url=.. : gets node by path
 
 	/node/getparent/{id} : gets parent of 1065
-	/node/getparent?path=...
+	/node/getparent?url=...
 
 ###Returns array of nodes:
 
 	/nodes/getchildren/{id} : gets all child nodes of the node with that id 
-	/nodes/getchildren?path=...
+	/nodes/getchildren?url=...
 
 	/nodes/getancestors/{id}
-	/nodes/getancestors?path=...
+	/nodes/getancestors?url=...
 
 
 ###Returns hierarchy of nodes:
 
 	/nodes/getdescendantsorself/{id}
-	/nodes/getdescendantsorself?path=...
+	/nodes/getdescendantsorself?url=...
 
 
 ###Returns navigation tree (only name, url, id & visible) of nodes:
 
 	/nodes/getnavigationtree/{id}
-	/nodes/getnavigationtree?path=...
+	/nodes/getnavigationtree?url=...
 
 
 ###Node format for single node
