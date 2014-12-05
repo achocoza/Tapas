@@ -216,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContentController.cs" />
+    <Compile Include="Helpers\JsonSerializer.cs" />
     <Compile Include="PublishedNodeSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

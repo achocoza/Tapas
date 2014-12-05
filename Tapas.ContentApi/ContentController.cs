@@ -8,28 +8,94 @@ using Umbraco.Core.Models;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
 using Umbraco;
-using uweb = Umbraco.Web;
+using umbracoWeb = Umbraco.Web;
 using Newtonsoft.Json;
+using Tapas.Helpers;
+using Umbraco.Web.Models.ContentEditing;
+using Umbraco.Core.Persistence.DatabaseModelDefinitions;
+using AutoMapper;
 
 namespace Tapas
 {
-    public static class Serializer
-    {
-        public static string AsJson(this IPublishedContent node, bool traverse = false, bool excludeProtected = true, bool minimal = false)
-        {
-            if (node == null) return "";
-            return JsonConvert.SerializeObject(node, new PublishedNodeSerializer(traverse, excludeProtected, minimal), new HtmlStringSerializer());
-        }
-        public static string AsJson(this IEnumerable<IPublishedContent> node, bool traverse = false, bool excludeProtected = true, bool minimal = false)
-        {
-            if (node == null) return "";
-            return JsonConvert.SerializeObject(node, new PublishedNodeSerializer(traverse, excludeProtected, minimal), new HtmlStringSerializer());
-        }
-    }
 
-    [PluginController("PublishedContent")]
-    public class NodeController : UmbracoApiController
+    [PluginController("Tapas"), IsBackOffice]
+    public class ContentController : UmbracoApiController
     {
+
+        public PagedResult<ContentItemBasic<ContentPropertyBasic, IContent>> GetDocumentsPaged(int id,
+            int pageNumber = 0,
+            int pageSize = 0,
+            string orderBy = "SortOrder",
+            Direction orderDirection = Direction.Ascending,
+            string filter = "")
+        {
+
+            int totalChildren;
+            IContent[] children;
+
+            if (pageNumber > 0 && pageSize > 0)
+            {
+                children = Services.ContentService.GetPagedChildren(id, (pageNumber - 1), pageSize, out totalChildren, orderBy, orderDirection, filter).ToArray();
+            }
+            else
+            {
+                children = Services.ContentService.GetChildren(id).ToArray();
+                totalChildren = children.Length;
+            }
+
+            if (totalChildren == 0)
+            {
+                return new PagedResult<ContentItemBasic<ContentPropertyBasic, IContent>>(0, 0, 0);
+            }
+
+            var pagedResult = new PagedResult<ContentItemBasic<ContentPropertyBasic, IContent>>(totalChildren, pageNumber, pageSize);
+            pagedResult.Items = children.Select(Mapper.Map<IContent, ContentItemBasic<ContentPropertyBasic, IContent>>);
+
+            return pagedResult;
+        }
+
+        private void dumpNode(int nodeId, string rootPath)
+        {
+            var n = Umbraco.TypedContent(nodeId);
+            
+            var relativeFileName = n.Url.TrimEnd('/');
+
+            if (relativeFileName == "/" || relativeFileName == "") relativeFileName = "_index.json";
+            else relativeFileName += ".json";
+
+
+            var fileName = rootPath + "/" + relativeFileName;
+
+            try
+            {
+
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(fileName));
+            }
+            catch (Exception)
+            {
+
+            }
+
+            System.IO.File.WriteAllText(fileName, n.AsJson());
+
+            foreach (var c in n.Children)
+            {
+                dumpNode(c.Id, rootPath);
+            }
+
+        }
+
+        public void GetDumpToDisk(int? id = -1)
+        {
+            var json = GetNode(id);
+            var defaultPath = System.Web.HttpContext.Current.Server.MapPath("~/App_Data/Tapas/ContentDump/");
+
+            dumpNode(id ?? -1, defaultPath);
+        }
+        public void GetDumpToDisk(string url)
+        {
+            GetDumpToDisk(umbraco.uQuery.GetNodeIdByUrl(url));
+        }
 
         public string GetNode(int? id = -1)
         {
@@ -47,10 +113,6 @@ namespace Tapas
         {
             return GetParent(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-    }
-    [PluginController("PublishedContent")]
-    public class NodesController : UmbracoApiController
-    {
 
         public string GetChildren(int? id = -1)
         {
@@ -78,7 +140,7 @@ namespace Tapas
         }
         public string GetAncestors(int? id = -1)
         {
-            return uweb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).AsJson();
+            return umbracoWeb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).AsJson();
         }
         public string GetAncestors(string url)
         {
@@ -86,7 +148,7 @@ namespace Tapas
         }
         public string GetDescendantsOrSelf(int? id = -1)
         {
-            return uweb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJson();
+            return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJson();
         }
         public string GetDescendantsOrSelf(string url)
         {
