@@ -8,74 +8,149 @@ using Umbraco.Core.Models;
 using Umbraco.Web.Mvc;
 using Umbraco.Web.WebApi;
 using Umbraco;
-using uweb = Umbraco.Web;
+using umbracoWeb = Umbraco.Web;
 using Newtonsoft.Json;
+using Tapas.Helpers;
+using Umbraco.Web.Models.ContentEditing;
+using Umbraco.Core.Persistence.DatabaseModelDefinitions;
+using AutoMapper;
 
 namespace Tapas
 {
 
-    [PluginController("PublishedContent")]
-    public class NodeController : UmbracoApiController
+    [PluginController("Tapas"), IsBackOffice]
+    public class ContentController : UmbracoApiController
     {
 
-        public object GetNode(int? id = -1)
+        public PagedResult<ContentItemBasic<ContentPropertyBasic, IContent>> GetDocumentsPaged(int id,
+            int pageNumber = 0,
+            int pageSize = 0,
+            string orderBy = "SortOrder",
+            Direction orderDirection = Direction.Ascending,
+            string filter = "")
         {
-            return Umbraco.TypedContent(id ?? -1).AsJObject();
+
+            int totalChildren;
+            IContent[] children;
+
+            if (pageNumber > 0 && pageSize > 0)
+            {
+                children = Services.ContentService.GetPagedChildren(id, (pageNumber - 1), pageSize, out totalChildren, orderBy, orderDirection, filter).ToArray();
+            }
+            else
+            {
+                children = Services.ContentService.GetChildren(id).ToArray();
+                totalChildren = children.Length;
+            }
+
+            if (totalChildren == 0)
+            {
+                return new PagedResult<ContentItemBasic<ContentPropertyBasic, IContent>>(0, 0, 0);
+            }
+
+            var pagedResult = new PagedResult<ContentItemBasic<ContentPropertyBasic, IContent>>(totalChildren, pageNumber, pageSize);
+            pagedResult.Items = children.Select(Mapper.Map<IContent, ContentItemBasic<ContentPropertyBasic, IContent>>);
+
+            return pagedResult;
         }
-        public object GetNode(string url)
+
+        private void dumpNode(int nodeId, string rootPath)
+        {
+            var n = Umbraco.TypedContent(nodeId);
+            
+            var relativeFileName = n.Url.TrimEnd('/');
+
+            if (relativeFileName == "/" || relativeFileName == "") relativeFileName = "_index.json";
+            else relativeFileName += ".json";
+
+
+            var fileName = rootPath + "/" + relativeFileName;
+
+            try
+            {
+
+                System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(fileName));
+            }
+            catch (Exception)
+            {
+
+            }
+
+            System.IO.File.WriteAllText(fileName, n.AsJson());
+
+            foreach (var c in n.Children)
+            {
+                dumpNode(c.Id, rootPath);
+            }
+
+        }
+
+        public void GetDumpToDisk(int? id = -1)
+        {
+            var json = GetNode(id);
+            var defaultPath = System.Web.HttpContext.Current.Server.MapPath("~/App_Data/Tapas/ContentDump/");
+
+            dumpNode(id ?? -1, defaultPath);
+        }
+        public void GetDumpToDisk(string url)
+        {
+            GetDumpToDisk(umbraco.uQuery.GetNodeIdByUrl(url));
+        }
+
+        public string GetNode(int? id = -1)
+        {
+            return Umbraco.TypedContent(id ?? -1).AsJson();
+        }
+        public string GetNode(string url)
         {
             return GetNode(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetParent(int? id = -1)
+        public string GetParent(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).Parent.AsJObject();
+            return Umbraco.TypedContent(id ?? -1).Parent.AsJson();
         }
-        public object GetParent(string url)
+        public string GetParent(string url)
         {
             return GetParent(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-    }
-    [PluginController("PublishedContent")]
-    public class NodesController : UmbracoApiController
-    {
 
-        public object GetChildren(int? id = -1)
+        public string GetChildren(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).Children.AsJArray();
+            return Umbraco.TypedContent(id ?? -1).Children.AsJson();
         }
-        public object GetChildren(string url)
+        public string GetChildren(string url)
         {
             return GetChildren(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetTree(int? id = -1)
+        public string GetTree(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).AsJObject(true);
+            return Umbraco.TypedContent(id ?? -1).AsJson(true);
         }
-        public object GetTree(string url)
+        public string GetTree(string url)
         {
             return GetTree(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetNavigationTree(int? id = -1)
+        public string GetNavigationTree(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).AsJObject(true, minimal: true);
+            return Umbraco.TypedContent(id ?? -1).AsJson(true, minimal: true);
         }
-        public object GetNavigationTree(string url)
+        public string GetNavigationTree(string url)
         {
             return GetNavigationTree(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetAncestors(int? id = -1)
+        public string GetAncestors(int? id = -1)
         {
-            return uweb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).AsJArray();
+            return umbracoWeb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).AsJson();
         }
-        public object GetAncestors(string url)
+        public string GetAncestors(string url)
         {
             return GetAncestors(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetDescendantsOrSelf(int? id = -1)
+        public string GetDescendantsOrSelf(int? id = -1)
         {
-            return uweb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJArray();
+            return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJson();
         }
-        public object GetDescendantsOrSelf(string url)
+        public string GetDescendantsOrSelf(string url)
         {
             return GetDescendantsOrSelf(umbraco.uQuery.GetNodeIdByUrl(url));
         }
