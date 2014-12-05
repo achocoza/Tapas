@@ -14,6 +14,7 @@ using Tapas.Helpers;
 using Umbraco.Web.Models.ContentEditing;
 using Umbraco.Core.Persistence.DatabaseModelDefinitions;
 using AutoMapper;
+using System.IO;
 
 namespace Tapas
 {
@@ -54,15 +55,13 @@ namespace Tapas
             return pagedResult;
         }
 
-        private void dumpNode(int nodeId, string rootPath)
+        private void dumpNode(int nodeId, string rootPath, bool asYaml)
         {
             var n = Umbraco.TypedContent(nodeId);
             
             var relativeFileName = n.Url.TrimEnd('/');
 
-            if (relativeFileName == "/" || relativeFileName == "") relativeFileName = "_index.json";
-            else relativeFileName += ".json";
-
+            if (relativeFileName == "/" || relativeFileName == "") relativeFileName = "_index";
 
             var fileName = rootPath + "/" + relativeFileName;
 
@@ -76,23 +75,40 @@ namespace Tapas
 
             }
 
-            System.IO.File.WriteAllText(fileName, n.AsJson());
+            var contents = n.AsJson();
+
+            if (asYaml)
+            {
+                var s = new YamlDotNet.Serialization.Serializer();
+                var sw = new StringWriter();
+                var jobject = JsonConvert.DeserializeObject(contents);
+                s.Serialize(sw, jobject);
+
+                contents = s.ToString();
+                System.IO.File.WriteAllText(fileName + ".yaml", contents);
+            }
+            else
+            {
+                System.IO.File.WriteAllText(fileName + ".json", contents);
+            }
+
+            
 
             foreach (var c in n.Children)
             {
-                dumpNode(c.Id, rootPath);
+                dumpNode(c.Id, rootPath, asYaml);
             }
 
         }
 
-        public void GetDumpToDisk(int? id = -1)
+        public void GetDumpToDisk(int? id = -1, bool asYaml = true)
         {
             var json = GetNode(id);
             var defaultPath = System.Web.HttpContext.Current.Server.MapPath("~/App_Data/Tapas/ContentDump/");
 
-            dumpNode(id ?? -1, defaultPath);
+            dumpNode(id ?? -1, defaultPath, asYaml);
         }
-        public void GetDumpToDisk(string url)
+        public void GetDumpToDisk(string url, bool asYaml = true)
         {
             GetDumpToDisk(umbraco.uQuery.GetNodeIdByUrl(url));
         }
