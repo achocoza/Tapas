@@ -1,30 +1,8 @@
 A simple api for published Umbraco 6+ (and 7) content. Made for Ajax queries.
 
-Using tapasClient.js:
-
-Get and iterate all content
-
-	tapasClient.getDescendantsAndSelf().done(function(children){
-		for (var child in children) {
-			console.log(children[child].Name + "," + children[child].Url);
-		}
-	});
-
-	$.ajax({url:"/umbraco/publishedcontent/nodes/getdescendantsandself"}).done(...)
-
-Get and iterate navigation tree (only navigation properties):
-
-    var logChildren = function(children) {
-		for (var child in children) {
-			console.log(children[child].Name + "," + children[child].NiceUrl);
-			logChildren(children[child].Children);
-		}
-	};
-	tapasClient.getNavigationTree().done(logChildren);
-
-	$.ajax({url:"/umbraco/publishedcontent/nodes/getnavigationtree"}).done(...)
-
-
+**Version Bump 2.0.0**
+* Simplified Urls
+* Content Dump to file (from backoffice)
 
 ###TapasClient has the following functions:
 ####Returns (with the promise interface) node/s with all properties:
@@ -35,7 +13,7 @@ Get and iterate navigation tree (only navigation properties):
 * getDescendantsAndSelf
 
 ####Returns (with the promise interface) tree with only navigation properties (Id, NiceUrl, Name and Visible):
-* getNavigationTree
+* getTree
 
 ####Parameters (same for all functions):
 * getNode(nodeid:number)
@@ -45,38 +23,22 @@ Get and iterate navigation tree (only navigation properties):
 ##Using the http api directly:
 Api starts at 
 
-	/umbraco/publishedcontent
+	/tapas/content
 
 All requests must be as GET and as application/json (so you'll need fiddler/curl/restconsole to try it)
 
 ###Returns a single node:
 
-	/node/getnode/{id} : gets node by id
-	/node/getnode?url=.. : gets node by path
+	/getnode/{id} : gets node by id 
+	/getnode?url=.. : gets node by path
 
-	/node/getparent/{id} : gets parent of 1065
-	/node/getparent?url=...
+	/getparent/{id} : gets parent of 1065
+	/getparent?url=...
 
-###Returns array of nodes:
+###Returns node "trees" (node with its descendants):
 
-	/nodes/getchildren/{id} : gets all child nodes of the node with that id 
+	/gettree/{id} : gets complete tree of nodes from the node with that id
 	/nodes/getchildren?url=...
-
-	/nodes/getancestors/{id}
-	/nodes/getancestors?url=...
-
-
-###Returns hierarchy of nodes:
-
-	/nodes/getdescendantsorself/{id}
-	/nodes/getdescendantsorself?url=...
-
-
-###Returns navigation tree (only name, url, id & visible) of nodes:
-
-	/nodes/getnavigationtree/{id}
-	/nodes/getnavigationtree?url=...
-
 
 ###Node format for single node
 
@@ -107,7 +69,7 @@ All requests must be as GET and as application/json (so you'll need fiddler/curl
 		"ChildIds": [1089,1090]
 	}
 
-###Format for navigation tree
+###Format for tree
 
 	{
 		"NiceUrl": "/some-root/",
@@ -137,3 +99,44 @@ All requests must be as GET and as application/json (so you'll need fiddler/curl
 			}]
 		}]
 	}
+
+
+---
+
+You can also use the tapasClient.js to your nodes easily:
+
+Get and iterate all content as array
+
+	tapasClient.getDescendantsAndSelf().done(function(children){
+		for (var child in children) {
+			console.log(children[child].Name + "," + children[child].Url);
+		}
+	});
+
+	$.ajax({url:"/umbraco/tapas/content/gettree"}).done(...)
+
+Get and iterate all content as tree
+
+	tapasClient.getDescendantsAndSelf().done(function(children){
+		for (var child in children) {
+			console.log(children[child].Name + "," + children[child].Url);
+		}
+	});
+
+	$.ajax({url:"/umbraco/tapas/content/gettree"}).done(...)
+
+
+Get and iterate navigation tree (only navigation properties):
+
+    var logChildren = function(children) {
+		for (var child in children) {
+			console.log(children[child].Name + "," + children[child].NiceUrl);
+			logChildren(children[child].Children);
+		}
+	};
+	tapasClient.getNavigationTree().done(logChildren);
+
+	$.ajax({url:"/umbraco/tapas/content/getnavigationtree"}).done(...)
+
+
+

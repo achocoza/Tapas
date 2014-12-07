@@ -1,4 +1,4 @@
-﻿var tapasClient;
+var tapasClient;
 (function (tapasClient) {
     function getCurrentPath() {
         return window.location.pathname;
@@ -6,14 +6,14 @@
     tapasClient.getCurrentPath = getCurrentPath;
     tapasClient.options = {
         paths: {
-            root: "/umbraco/publishedcontent",
-            children: "/nodes/getchildren",
-            node: "/node/getnode",
-            parent: "/node/getparent",
-            ancestors: "/nodes/getancestors",
-            descendantsOrSelf: "/nodes/getdescendantsorself",
-            tree: "/nodes/gettree",
-            navigationTree: "/nodes/getnavigationtree",
+            root: "/umbraco/tapas",
+            children: "/content/getchildren",
+            node: "/content/getnode",
+            parent: "/content/getparent",
+            ancestors: "/content/getancestors",
+            descendantsOrSelf: "/content/getdescendantsorself",
+            tree: "/content/gettree",
+            navigationTree: "/content/getnavigationtree",
             byId: "/",
             byPath: "?url="
         },

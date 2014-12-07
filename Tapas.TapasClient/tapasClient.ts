@@ -28,14 +28,14 @@ module tapasClient {
     }
     export var options = {
         paths: {
-            root: "/umbraco/publishedcontent",
-            children: "/nodes/getchildren",
-            node: "/node/getnode",
-            parent: "/node/getparent",
-            ancestors: "/nodes/getancestors",
-            descendantsOrSelf: "/nodes/getdescendantsorself",
-            tree: "/nodes/gettree",
-            navigationTree: "/nodes/getnavigationtree",
+            root: "/umbraco/tapas",
+            children: "/content/getchildren",
+            node: "/content/getnode",
+            parent: "/content/getparent",
+            ancestors: "/content/getancestors",
+            descendantsOrSelf: "/content/getdescendantsorself",
+            tree: "/content/gettree",
+            navigationTree: "/content/getnavigationtree",
             byId: "/",
             byPath: "?url="
 
@@ -204,9 +204,9 @@ module tapasClient {
     /**
 *   Get full content tree from current path (no arg), path (string arg) or id (number arg)
 */
-    export function getTree(path: string): JQueryPromise<UmbracoNav>;
-    export function getTree(id: number): JQueryPromise<UmbracoNav>;
-    export function getTree(selector?: any): JQueryPromise<UmbracoNav> {
+    export function getTree(path: string): JQueryPromise<UmbracoNode>;
+    export function getTree(id: number): JQueryPromise<UmbracoNode>;
+    export function getTree(selector?: any): JQueryPromise<UmbracoNode> {
         return getFromApi<UmbracoNode>(options.paths.tree, selector);
     }
 
