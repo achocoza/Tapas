@@ -1,4 +1,6 @@
-A simple api for published Umbraco 6+ (and 7) content. Made for Ajax queries.
+A simple api for published Umbraco (6 and 7) content. Made for Ajax queries.
+
+See also http://joeriks-blog.azurewebsites.net/archive/a-prerelease-of-a-new-version-of-tapas-an-api-for-published-umbraco-content/
 
 **Version Bump 2.0.0**
 * Simplified Urls
