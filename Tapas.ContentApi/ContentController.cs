@@ -75,20 +75,21 @@ namespace Tapas
 
             }
 
-            var contents = n.AsJson();
 
             if (asYaml)
             {
+                var contents = new Tapas.Serializer().CreateAnonymousObject(n);
+
                 var s = new YamlDotNet.Serialization.Serializer();
                 var sw = new StringWriter();
-                var jobject = JsonConvert.DeserializeObject(contents);
-                s.Serialize(sw, jobject);
+                s.Serialize(sw, contents);
 
-                contents = s.ToString();
-                System.IO.File.WriteAllText(fileName + ".yaml", contents);
+                var serialized = sw.ToString();
+                System.IO.File.WriteAllText(fileName + ".yaml", serialized);
             }
             else
             {
+                var contents = n.AsJson();
                 System.IO.File.WriteAllText(fileName + ".json", contents);
             }
 
