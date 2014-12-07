@@ -10,6 +10,10 @@ See also http://joeriks-blog.azurewebsites.net/archive/a-prerelease-of-a-new-ver
 
 	install-package Our.Umbraco.Tapas
 
+**Then try it on your site with your browser js console:**
+
+	$.getJSON("/umbraco/tapas/content/getnode?url=/").done(function(data){console.log(data);})
+
 ###TapasClient has the following functions:
 ####Returns (with the promise interface) node/s with all properties:
 * getNode
