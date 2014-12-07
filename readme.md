@@ -14,15 +14,22 @@ See also http://joeriks-blog.azurewebsites.net/archive/a-prerelease-of-a-new-ver
 
 	$.getJSON("/umbraco/tapas/content/getnode?url=/").done(function(data){console.log(data);})
 
+
+**Get all nodes as an array:**
+
+	$.getJSON("/umbraco/tapas/content/getdescendantsorself?url=/").done(function(data){console.log(data);})
+
+**Then all nodes as a tree:**
+
+	$.getJSON("/umbraco/tapas/content/gettree?url=/").done(function(data){console.log(data);})
+
 ###TapasClient has the following functions:
 ####Returns (with the promise interface) node/s with all properties:
 * getNode
 * getChildren
 * getParent
 * getAncestors
-* getDescendantsAndSelf
-
-####Returns (with the promise interface) tree with only navigation properties (Id, NiceUrl, Name and Visible):
+* getDescendantsOrSelf
 * getTree
 
 ####Parameters (same for all functions):
@@ -41,14 +48,6 @@ All requests must be as GET and as application/json (so you'll need fiddler/curl
 
 	/getnode/{id} : gets node by id 
 	/getnode?url=.. : gets node by path
-
-	/getparent/{id} : gets parent of 1065
-	/getparent?url=...
-
-###Returns node "trees" (node with its descendants):
-
-	/gettree/{id} : gets complete tree of nodes from the node with that id
-	/nodes/getchildren?url=...
 
 ###Node format for single node
 
