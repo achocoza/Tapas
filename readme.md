@@ -6,6 +6,10 @@ See also http://joeriks-blog.azurewebsites.net/archive/a-prerelease-of-a-new-ver
 * Simplified Urls
 * Content Dump to file (from backoffice)
 
+**Nuget**
+
+	install-package Our.Umbraco.Tapas
+
 ###TapasClient has the following functions:
 ####Returns (with the promise interface) node/s with all properties:
 * getNode
