@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Tapas.MvcClient;
@@ -16,10 +12,14 @@ namespace Tapas.SampleWeb
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
-            // connect to remote Umbraco host, this sample
-            // assumes the default Umbraco 7.2 installation
-            // depending on your installation you will need to change
-            // the views to match the template aliases you use
+            // Initialize "ContentService" to load data from remote 
+            // Umbraco host. This sample assumes a default Umbraco 7.2 
+            // installation running Tapas.ContentHost.
+
+            // Depending on your installation you will need to change
+            // the views to match the template aliases you use.
+
+            // This project has no dependency to Umbraco at all.
 
             ContentService.InitializeCurrent("http://localhost:43896/");
 
