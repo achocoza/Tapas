@@ -48,9 +48,9 @@ namespace Tapas.ContentApi.Tests
         public void AddNodes()
         {
             var json1 = @"{""Children"":[],""ContentSet"":[],""ContentType"":null,""CreateDate"":""2014-12-07T11:20:50"",""CreatorId"":0,""CreatorName"":""jonas"",""DocumentTypeAlias"":""LandingPage"",""DocumentTypeId"":1061,""Id"":1074,""IsDraft"":false,""ItemType"":0,""Level"":2,""Name"":""Learn"",""Parent"":null,""ParentId"":1073,""Path"":""-1,1073,1074"",""Properties"":[],""PropertiesDictionary"":{""umbracoNaviHide"":false,""content"":""""},""SortOrder"":0,""TemplateId"":1057,""UpdateDate"":""2014-12-07T11:20:52"",""Url"":""/learn/"",""UrlName"":""learn"",""Version"":""00000000-0000-0000-0000-000000000000"",""WriterId"":0,""WriterName"":""jonas""}";
-            var result1 = Newtonsoft.Json.JsonConvert.DeserializeObject<SerializableNode>(json1);
-            
-            var result2 = Newtonsoft.Json.JsonConvert.DeserializeObject<SerializableNode>(json1);
+            var result1 = Newtonsoft.Json.JsonConvert.DeserializeObject<PortableNode>(json1);
+
+            var result2 = Newtonsoft.Json.JsonConvert.DeserializeObject<PortableNode>(json1);
             result2.Id = 2;
 
             var p = new PortableNodeCollection();

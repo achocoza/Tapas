@@ -13,5 +13,13 @@ namespace Tapas.TapasMvcClient
         {
             return View(ContentService.Current.ContentByUrl(url));
         }
+        public ActionResult ByTemplateAlias(string url)
+        {
+            var content = ContentService.Current.ContentByUrl(url);
+            if (content == null)
+                return View("NotFound");
+            else
+                return View(content.TemplateAlias, content);
+        }
     }
 }

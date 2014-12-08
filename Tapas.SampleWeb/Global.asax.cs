@@ -21,7 +21,7 @@ namespace Tapas.SampleWeb
             RouteTable.Routes.MapRoute(
                 name: "Default",
                 url: "{*url}",
-                defaults: new { controller = "Content", action = "Index" }
+                defaults: new { controller = "Content", action = "ByTemplateAlias" }
             );
 
             BundleConfig.RegisterBundles(BundleTable.Bundles);

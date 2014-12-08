@@ -17,7 +17,7 @@ namespace Tapas.ContentApi.Tests
                 var url = "/";
                 var portableNodeCollection = new PortableNodeCollection();
                 var json = webClient.DownloadString(remoteUrl + "/umbraco/tapas/content/getdescendantsorself?url=" + url);
-                var des = JsonConvert.DeserializeObject<List<SerializableNode>>(json);
+                var des = JsonConvert.DeserializeObject<List<PortableNode>>(json);
                 foreach (var p in des)
                 {
                     portableNodeCollection.AddOrUpdate(p);
@@ -40,7 +40,7 @@ namespace Tapas.ContentApi.Tests
                 //var json2 = "{\"Children\":[],\"ContentSet\":[],\"ContentType\":null,\"CreateDate\":\"2014-12-07T11:20:50\",\"CreatorId\":0,\"CreatorName\":\"jonas\",\"DocumentTypeAlias\":\"LandingPage\",\"DocumentTypeId\":1061,\"Id\":1074,\"IsDraft\":false,\"ItemType\":0,\"Level\":2,\"Name\":\"Learn\",\"Parent\":null,\"ParentId\":1073,\"Path\":\"-1,1073,1074\",\"Properties\":[],\"PropertiesDictionary\":{\"umbracoNaviHide\":false,\"content\":\"\"},\"SortOrder\":0,\"TemplateId\":1057,\"UpdateDate\":\"2014-12-07T11:20:52\",\"Url\":\"/learn/\",\"UrlName\":\"learn\",\"Version\":\"00000000-0000-0000-0000-000000000000\",\"WriterId\":0,\"WriterName\":\"jonas\"}";
                 //Assert.AreEqual(json, json2);
 
-                var des = JsonConvert.DeserializeObject<SerializableNode>(json);
+                var des = JsonConvert.DeserializeObject<PortableNode>(json);
 
                 
             }
