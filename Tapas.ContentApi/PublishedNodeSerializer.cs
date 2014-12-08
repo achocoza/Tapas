@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,23 @@ namespace Tapas
         }
     }
 
+    public class PublishedContentContractResolver : DefaultContractResolver
+    {
+        public PublishedContentContractResolver()
+        {
+        }
+
+        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+        {
+            if (typeof(IPublishedContent).IsAssignableFrom(type.GetType()))
+            {
+                return base.CreateProperties(type, memberSerialization).Where(
+                    p => !(new[] { "Parent", "Children", "ContentSet" }.Contains(p.PropertyName))).ToList();
+            }
+            else return base.CreateProperties(type, memberSerialization);
+
+        }
+    }
     public class HtmlStringSerializer : JsonConverter
     {
         public HtmlStringSerializer()

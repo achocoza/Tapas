@@ -99,36 +99,36 @@ namespace Tapas
             return pagedResult;
         }
 
-        public string GetNode(int? id = -1)
+        public object GetNode(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).AsJson();
+            return Umbraco.TypedContent(id ?? -1).AsPortableNode(false);
         }
-        public string GetNode(string url)
+        public object GetNode(string url)
         {
             return GetNode(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public string GetParent(int? id = -1)
+        public object GetParent(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).Parent.AsJson();
+            return Umbraco.TypedContent(id ?? -1).Parent.AsPortableNode(false);
         }
-        public string GetParent(string url)
+        public object GetParent(string url)
         {
             return GetParent(umbraco.uQuery.GetNodeIdByUrl(url));
         }
 
-        public string GetChildren(int? id = -1)
+        public object GetChildren(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).Children.AsJson();
+            return Umbraco.TypedContent(id ?? -1).Children.Select(t=>t.AsPortableNode(false));
         }
-        public string GetChildren(string url)
+        public object GetChildren(string url)
         {
             return GetChildren(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public string GetTree(int? id = -1)
+        public object GetTree(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).AsJson(true);
+            return Umbraco.TypedContent(id ?? -1).AsPortableNode(true);
         }
-        public string GetTree(string url)
+        public object GetTree(string url)
         {
             return GetTree(umbraco.uQuery.GetNodeIdByUrl(url));
         }
@@ -140,19 +140,19 @@ namespace Tapas
         {
             return GetNavigationTree(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public string GetAncestors(int? id = -1)
+        public object GetAncestors(int? id = -1)
         {
-            return umbracoWeb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).AsJson();
+            return umbracoWeb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).Select(t=>t.AsPortableNode(false));
         }
-        public string GetAncestors(string url)
+        public object GetAncestors(string url)
         {
             return GetAncestors(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public string GetDescendantsOrSelf(int? id = -1)
+        public object GetDescendantsOrSelf(int? id = -1)
         {
-            return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJson();
+            return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).Select(t=>t.AsPortableNode(false));
         }
-        public string GetDescendantsOrSelf(string url)
+        public object GetDescendantsOrSelf(string url)
         {
             return GetDescendantsOrSelf(umbraco.uQuery.GetNodeIdByUrl(url));
         }
