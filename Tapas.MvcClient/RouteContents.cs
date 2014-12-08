@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Tapas.TapasMvcClient
+namespace Tapas.MvcClient
 {
     public class RouteContents
     {

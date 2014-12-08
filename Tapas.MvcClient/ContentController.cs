@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Tapas.TapasMvcClient
+namespace Tapas.MvcClient
 {
     public class ContentController:Controller
     {

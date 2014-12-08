@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tapas;
 
-namespace Tapas.TapasMvcClient
+namespace Tapas.MvcClient
 {
     public class ContentService
     {

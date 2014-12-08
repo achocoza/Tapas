@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Tapas.TapasMvcClient;
+using Tapas.MvcClient;
 
 namespace Tapas.SampleWeb
 {
