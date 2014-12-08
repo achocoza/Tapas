@@ -11,7 +11,7 @@ namespace Tapas.TapasMvcClient
     {
         public ActionResult Index(string url)
         {
-            return View(new ContentService("http://localhost:43896/").ContentByUrl(url));
+            return View(ContentService.Current.ContentByUrl(url));
         }
     }
 }

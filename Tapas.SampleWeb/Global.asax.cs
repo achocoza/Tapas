@@ -15,10 +15,8 @@ namespace Tapas.SampleWeb
         {
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            //RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            var c = new ContentService("http://localhost:43896/");
-            c.LoadContent("/");
+            ContentService.InitializeCurrent("http://localhost:43896/");
 
             RouteTable.Routes.MapRoute(
                 name: "Default",

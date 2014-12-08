@@ -9,9 +9,9 @@ namespace Tapas.Helpers
 {
     public static class AsPortableNodeExtension
     {
-        public static PortableNode AsPortableNode(this IPublishedContent node, bool traverseChildren)
+        public static SerializableNode AsPortableNode(this IPublishedContent node, bool traverseChildren)
         {
-            return new PortableNode(node,traverseChildren);
+            return new SerializableNode(node,traverseChildren);
         }
     }
 }

@@ -4,17 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tapas.Models;
+using Tapas;
 
 namespace Tapas.TapasMvcClient
 {
     public class ContentService
     {
+        public static ContentService Current { get; private set; }
+
         string remoteUrl;
         PortableNodeCollection portableNodeCollection;
-        public ContentService(string remoteUrl)
+
+        public ContentService(string remoteUrl, string url = "/")
         {
             this.remoteUrl = remoteUrl;
+            LoadContent("/");
         }
         public void LoadContent(string url)
         {
@@ -29,12 +33,19 @@ namespace Tapas.TapasMvcClient
                 }
             }
         }
+        public static void InitializeCurrent(string remoteUrl)
+        {
+            Current = new ContentService(remoteUrl);
+        }
         public PortableNode ContentByUrl(string url)
         {
+            if (string.IsNullOrEmpty(url)) url = "/";
+            if (!url.StartsWith("/")) url = "/" + url;
+
             return portableNodeCollection.PortableNodes.SingleOrDefault(t => t.Url == url);
         }
         public PortableNode ContentById(int id)
-        {
+        {            
             return portableNodeCollection.PortableNodes.SingleOrDefault(t => t.Id == id);
         }
     }

@@ -1,4 +1,4 @@
-﻿@model Tapas.Models.ContentNode
+﻿@model Tapas.PortableNode
 @{
     Layout = null;
 }
@@ -14,5 +14,14 @@
     <div>
         @Model.Name , @Model.Url
     </div>
+
+    <ul>
+        @foreach (var c in Model.Children)
+        {
+            <li><a href="@c.Url">@c.Name</a></li>
+        }
+
+    </ul>
+
 </body>
 </html>
