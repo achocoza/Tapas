@@ -1,4 +1,4 @@
-A simple api for published Umbraco (6 and 7) content. Made for Ajax queries.
+A simple api for published Umbraco (6 and 7) content. Made for Ajax queries or use from an external MVC application.
 
 See also http://joeriks-blog.azurewebsites.net/archive/a-prerelease-of-a-new-version-of-tapas-an-api-for-published-umbraco-content/
 
@@ -10,32 +10,7 @@ That means you use TapasMVCClient in a vanilla MVC application, connect it to a 
 syntax as Children, Parent, Name, Url and so on. Properties are transformed into a Dictionary<string,object> which works fine for most
 simple properties. (But complex properties like the 7.2 Grid require custom json parsing.) 
 
-Also media is not supported by this, you should look at the Azure media package for that.
-
-Check out the SampleWeb project to see how to use it. Basically you need three things:
-1) install TapasContentApi on the host Umbraco web.
-2) install TapasMVCClient on the client MVC web.
-3) add the route to TapasMVCClient:
-
-        ContentService.InitializeCurrent("http://localhost:43896/");
-
-        RouteTable.Routes.MapRoute(
-            name: "Default",
-            url: "{*url}",
-            defaults: new { controller = "Content", action = "ByTemplateAlias" }
-        );
-
-4) add views in the /Views/Content folder, using the model @Tapas.PortableContent - name them as your
-templatealiases. You can also use your own controller and the ContentService:
-
-        public ActionResult CustomAction(string url)
-        {
-            var content = ContentService.Current.ContentByUrl(url);
-            if (content == null)
-                return View("NotFound");
-            else
-                return View(content.PropertyDictionary["ViewName"], content);
-        }
+See below for more information, or checkout the SampleWeb project to see how to use it.
 
 
 **Version 2.0.0 - Nuget, simplified URLs and first version of dump to file**
@@ -183,3 +158,35 @@ Get and iterate navigation tree (only navigation properties):
 
 
 
+### Using the MVC client ###
+
+Basically you need four things:
+
+1) install TapasContentApi on the host Umbraco web.
+
+2) install TapasMVCClient on the client MVC web.
+
+3) add the route to TapasMVCClient:
+
+
+        ContentService.InitializeCurrent("http://localhost:43896/");
+
+        RouteTable.Routes.MapRoute(
+            name: "Default",
+            url: "{*url}",
+            defaults: new { controller = "Content", action = "ByTemplateAlias" }
+        );
+
+4) add views in the /Views/Content folder, using the model @Tapas.PortableContent - name them as your
+templatealiases. You can also use your own controller and the ContentService:
+
+        public ActionResult CustomAction(string url)
+        {
+            var content = ContentService.Current.ContentByUrl(url);
+            if (content == null)
+                return View("NotFound");
+            else
+                return View(content.PropertyDictionary["ViewName"], content);
+        }
+
+Media is not supported by this, you should look at the Azure media package for that.

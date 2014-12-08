@@ -1,0 +1,29 @@
+﻿@model Tapas.PortableNode
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        @Model.Name , @Model.Url
+    </div>
+
+    <p><a href="/">Home</a></p>
+
+    <ul>
+        @foreach (var c in Model.Children)
+        {
+            <li><a href="@c.Url">@c.Name</a></li>
+        }
+
+    </ul>
+
+</body>
+</html>

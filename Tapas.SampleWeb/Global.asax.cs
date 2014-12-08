@@ -16,6 +16,11 @@ namespace Tapas.SampleWeb
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 
+            // connect to remote Umbraco host, this sample
+            // assumes the default Umbraco 7.2 installation
+            // depending on your installation you will need to change
+            // the views to match the template aliases you use
+
             ContentService.InitializeCurrent("http://localhost:43896/");
 
             RouteTable.Routes.MapRoute(
