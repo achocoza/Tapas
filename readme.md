@@ -15,9 +15,13 @@ See below for more information, or checkout the SampleWeb project to see how to 
 
 **Version 2.0.0 - Nuget, simplified URLs and first version of dump to file**
 
-**Nuget**
+**Nuget Umbraco host binaries**
 
 	install-package Our.Umbraco.Tapas
+
+**Nuget MVC client binaries**
+
+	install-package Our.Umbraco.TapasClient
 
 **Then try it on your site with your browser js console:**
 
