@@ -109,7 +109,6 @@ var tapasClient;
     }
     tapasClient.arraySearch = arraySearch;
 
-    // JQueryPromise<T>
     function getFromApi(resource, selector) {
         var ajaxCall = function (path) {
             if (tapasClient.options.async)
@@ -184,4 +183,3 @@ var tapasClient;
     }
     tapasClient.getNavigationTree = getNavigationTree;
 })(tapasClient || (tapasClient = {}));
-//# sourceMappingURL=tapasClient.js.map

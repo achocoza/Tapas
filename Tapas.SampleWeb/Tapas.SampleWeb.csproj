@@ -182,10 +182,6 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tapas.Models\Tapas.Models.csproj">
-      <Project>{bc32738f-1cde-4e9c-bfb5-651743b3628b}</Project>
-      <Name>Tapas.Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tapas.MvcClient\Tapas.MvcClient.csproj">
       <Project>{96360806-3390-4f70-be22-f4eef995e718}</Project>
       <Name>Tapas.MvcClient</Name>

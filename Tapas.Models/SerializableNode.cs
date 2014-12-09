@@ -26,10 +26,10 @@ namespace Tapas
         }
         public SerializableNode(IPublishedContent content, bool traverseChildren, bool getTemplateAlias = true)
         {
-            //if (traverseChildren)
-            //    this.Children = content.Children.Select(c => new PortableNode(c, traverseChildren));
-            //else
-            //    this.Children = new List<PortableNode>();
+            if (traverseChildren)
+                this.Children = content.Children.Select(c => new SerializableNode(c, traverseChildren));
+            else
+                this.Children = new List<SerializableNode>();
 
             //this.ContentType = content.ContentType;
             //this.ContentSet = new List<PortableNode>();// content.ContentSet;

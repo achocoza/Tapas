@@ -14,6 +14,7 @@ using Tapas.Helpers;
 using Umbraco.Web.Models.ContentEditing;
 using Umbraco.Core.Persistence.DatabaseModelDefinitions;
 using AutoMapper;
+using Newtonsoft.Json.Linq;
 
 namespace Tapas
 {
@@ -73,7 +74,7 @@ namespace Tapas
 
         public object GetChildren(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).Children.Select(t=>t.AsPortableNode(false));
+            return Umbraco.TypedContent(id ?? -1).Children.Select(t => t.AsPortableNode(false));
         }
         public object GetChildren(string url)
         {
@@ -97,7 +98,7 @@ namespace Tapas
         }
         public object GetAncestors(int? id = -1)
         {
-            return umbracoWeb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).Select(t=>t.AsPortableNode(false));
+            return umbracoWeb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).Select(t => t.AsPortableNode(false));
         }
         public object GetAncestors(string url)
         {
@@ -105,12 +106,30 @@ namespace Tapas
         }
         public object GetDescendantsOrSelf(int? id = -1)
         {
-            return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).Select(t=>t.AsPortableNode(false));
+            return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).Select(t => t.AsPortableNode(false));
         }
         public object GetDescendantsOrSelf(string url)
         {
             return GetDescendantsOrSelf(umbraco.uQuery.GetNodeIdByUrl(url));
         }
+
+        public object GetTreeSafe(int? id = -1)
+        {
+            return Umbraco.TypedContent(id ?? -1).AsJObject(true);
+        }
+        public object GetTreeSafe(string url)
+        {
+            return GetTreeSafe(umbraco.uQuery.GetNodeIdByUrl(url));
+        }
+        public object GetDescendantsOrSelfSafe(int? id = -1)
+        {
+            return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJArray(false);
+        }
+        public object GetDescendantsOrSelfSafe(string url)
+        {
+            return GetDescendantsOrSelfSafe(umbraco.uQuery.GetNodeIdByUrl(url));
+        }
+
     }
 
     //[PluginController("PublishedContent")]
