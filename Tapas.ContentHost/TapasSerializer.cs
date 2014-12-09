@@ -17,6 +17,7 @@ namespace Tapas.Helpers
             Converters.Add(new PublishedNodeSerializer(traverse, excludeProtected, minimal));
             Converters.Add(new HtmlStringSerializer());
             Converters.Add(new PublishedPropertySerializer());
+            ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         }
     }
 

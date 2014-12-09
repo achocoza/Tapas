@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,6 +41,8 @@ namespace Tapas
                 return new List<PortableNode>();
             }
         }
+
+        [JsonIgnore]
         public object ContentType { get; set; }
         public DateTime CreateDate { get; set; }
         public int CreatorId { get; set; }
@@ -60,9 +63,12 @@ namespace Tapas
         }
         public int Id { get; set; }
         public bool IsDraft { get; set; }
+
+        [JsonIgnore]
         public object ItemType { get; set; }
         public int Level { get; set; }
         public string Name { get; set; }
+        [JsonIgnore]
         public PortableNode Parent
         {
             get
@@ -73,7 +79,9 @@ namespace Tapas
         }
         public int ParentId { get; set; }
         public string Path { get; set; }
+        [JsonIgnore]
         public ICollection<object> Properties { get; set; }
+        [JsonProperty(PropertyName = "Properties")]
         public Dictionary<string, object> PropertiesDictionary { get; set; }
         public int SortOrder { get; set; }
         public int TemplateId { get; set; }
@@ -84,6 +92,8 @@ namespace Tapas
         public Guid Version { get; set; }
         public int WriterId { get; set; }
         public string WriterName { get; set; }
+
+        [JsonIgnore]
         public object this[string alias]
         {
             get { return null; }

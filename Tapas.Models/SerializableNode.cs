@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,8 +48,8 @@ namespace Tapas
             this.ParentId = (content.Parent == null) ? -1 : content.Parent.Id;
             this.Path = content.Path; 
             //this.Properties = content.Properties;
-            this.Properties = content.Properties.Select(p=>new SerializableProperty(p)).ToList<IPublishedProperty>();// new List<IPublishedProperty>();
-            //this.PropertiesDictionary = content.Properties.Select(p => new { p.PropertyTypeAlias, Value = p.Value }).ToDictionary(k => k.PropertyTypeAlias, k => k.Value);
+            //this.Properties = content.Properties.Select(p=>new SerializableProperty(p)).ToList<IPublishedProperty>();// new List<IPublishedProperty>();
+            this.PropertiesDictionary = content.Properties.ToDictionary(k => k.PropertyTypeAlias, k => k.DataValue);
             this.SortOrder = content.SortOrder;
             this.TemplateId = content.TemplateId;
             this.TemplateAlias = content.GetTemplateAlias();
@@ -70,7 +71,10 @@ namespace Tapas
             get;
             set;
         }
+
+        [JsonIgnore]
         public Umbraco.Core.Models.PublishedContent.PublishedContentType ContentType { get; set; }
+        
         public DateTime CreateDate { get; set; }
         public int CreatorId { get; set; }
         public string CreatorName { get; set; }
@@ -90,14 +94,21 @@ namespace Tapas
         }
         public int Id { get; set; }
         public bool IsDraft { get; set; }
+
+        [JsonIgnore]
         public PublishedItemType ItemType { get; set; }
         public int Level { get; set; }
         public string Name { get; set; }
-        public IPublishedContent Parent
-        { get; set; }
+        
+        [JsonIgnore]
+        public IPublishedContent Parent { get; set; }
         public int ParentId { get; set; }
         public string Path { get; set; }
+        
+        [JsonIgnore]
         public ICollection<IPublishedProperty> Properties { get; set; }
+
+        [JsonProperty(PropertyName = "Properties")]
         public Dictionary<string, object> PropertiesDictionary { get; set; }
         public int SortOrder { get; set; }
         public int TemplateId { get; set; }
@@ -108,6 +119,8 @@ namespace Tapas
         public Guid Version { get; set; }
         public int WriterId { get; set; }
         public string WriterName { get; set; }
+        
+        [JsonIgnore]
         public object this[string alias]
         {
             get { return null; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,8 @@ namespace Tapas
     {
         public SerializableProperty(IPublishedProperty property)
         {
-            this.Value = property.Value;
+            this.DataValue = property.DataValue;
+            //this.Value = property.Value;
             this.HasValue = property.HasValue;
             this.PropertyTypeAlias = property.PropertyTypeAlias;
         }
@@ -21,8 +23,9 @@ namespace Tapas
 
         public string PropertyTypeAlias { get; set; }
 
+        [JsonIgnore]
         public object Value { get; set; }
-
+        [JsonIgnore]
         public object XPathValue { get { return null; } set { } }
     }
 }
