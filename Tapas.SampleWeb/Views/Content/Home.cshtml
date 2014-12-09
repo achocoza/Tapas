@@ -16,14 +16,21 @@
     </div>
 
     <p><a href="/">Home</a></p>
+    
+    <p>You are on the page @Model.Name</p>
+    <p>Url: @Model.Url</p>
+    <p>Updated: @Model.UpdateDate.ToShortDateString()</p>
+    <p>Written by: @Model.WriterName</p>
 
+    <p>Properties:</p>
     <ul>
         @foreach (var p in Model.PropertiesDictionary)
         {
-            <li>@p.Key = @p.Value</li>
+            <li>@p.Key: @p.Value</li>
         }
     </ul>
 
+    <p>Children:</p>
     <ul>
         @foreach (var c in Model.Children)
         {

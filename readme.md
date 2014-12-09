@@ -12,7 +12,7 @@ A simple api for published Umbraco (6 and 7) content. Made for Ajax queries or u
 
 	$.getJSON("/umbraco/tapas/content/getdescendantsorself?url=/").done(function(data){console.log(data);})
 
-**Then all nodes as a tree:**
+**Get all nodes as a tree:**
 
 	$.getJSON("/umbraco/tapas/content/gettree?url=/").done(function(data){console.log(data);})
 
