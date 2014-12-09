@@ -12,66 +12,45 @@ using Umbraco.Core.Models;
 namespace Tapas
 {
 
-    public class Serializer
-    {
-        private JsonSerializer jsonSerializer;
-        private PublishedNodeSerializer publishedNodeSerializer;
-        public Serializer(bool traverseChildren = false, bool excludeProtected = true, bool onlyIncludeNameIdAndUrl = false, params JsonConverter[] additionalConverters)
-        {
-            jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings());
-            publishedNodeSerializer = new PublishedNodeSerializer(traverseChildren, excludeProtected, onlyIncludeNameIdAndUrl);
-            jsonSerializer.Converters.Add(publishedNodeSerializer);
+    //public class Serializer
+    //{
+    //    private JsonSerializer jsonSerializer;
+    //    private PublishedNodeSerializer publishedNodeSerializer;
+    //    public Serializer(bool traverseChildren = false, bool excludeProtected = true, bool onlyIncludeNameIdAndUrl = false, params JsonConverter[] additionalConverters)
+    //    {
+    //        jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings());
+    //        publishedNodeSerializer = new PublishedNodeSerializer(traverseChildren, excludeProtected, onlyIncludeNameIdAndUrl);
+    //        jsonSerializer.Converters.Add(publishedNodeSerializer);
 
-            foreach (var converter in additionalConverters) jsonSerializer.Converters.Add(converter);
-        }
-        public JObject AsJObject(IPublishedContent node)
-        {
-            return publishedNodeSerializer.CreateJObject(node, jsonSerializer);
-        }
-        public JArray AsJArray(IEnumerable<IPublishedContent> nodes)
-        {
-            return publishedNodeSerializer.CreateJArray(nodes, jsonSerializer);
-        }
-    }
+    //        foreach (var converter in additionalConverters) jsonSerializer.Converters.Add(converter);
+    //    }
+    //    public JObject AsJObject(IPublishedContent node)
+    //    {
+    //        return publishedNodeSerializer.CreateJObject(node, jsonSerializer);
+    //    }
+    //    public JArray AsJArray(IEnumerable<IPublishedContent> nodes)
+    //    {
+    //        return publishedNodeSerializer.CreateJArray(nodes, jsonSerializer);
+    //    }
+    //}
 
-    public class PublishedContentContractResolver : DefaultContractResolver
-    {
-        public PublishedContentContractResolver()
-        {
-        }
+    //public class PublishedContentContractResolver : DefaultContractResolver
+    //{
+    //    public PublishedContentContractResolver()
+    //    {
+    //    }
 
-        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
-        {
-            if (typeof(IPublishedContent).IsAssignableFrom(type.GetType()))
-            {
-                return base.CreateProperties(type, memberSerialization).Where(
-                    p => !(new[] { "Parent", "Children", "ContentSet" }.Contains(p.PropertyName))).ToList();
-            }
-            else return base.CreateProperties(type, memberSerialization);
+    //    protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+    //    {
+    //        if (typeof(IPublishedContent).IsAssignableFrom(type.GetType()))
+    //        {
+    //            return base.CreateProperties(type, memberSerialization).Where(
+    //                p => !(new[] { "Parent", "Children", "ContentSet" }.Contains(p.PropertyName))).ToList();
+    //        }
+    //        else return base.CreateProperties(type, memberSerialization);
 
-        }
-    }
-    public class HtmlStringSerializer : JsonConverter
-    {
-        public HtmlStringSerializer()
-        {
-        }
-
-        public override bool CanConvert(Type objectType)
-        {
-            return typeof(System.Web.Mvc.MvcHtmlString).IsAssignableFrom(objectType) || typeof(System.Web.HtmlString).IsAssignableFrom(objectType);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            writer.WriteValue(value.ToString());
-        }
-    }
+    //    }
+    //}
     public class PublishedNodeSerializer : JsonConverter
     {
         private bool traverseChildren;

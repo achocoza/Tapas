@@ -197,6 +197,7 @@
     <Compile Include="PortableNode.cs" />
     <Compile Include="PortableNodeCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializableProperty.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -45,10 +45,10 @@ namespace Tapas
             this.Name = content.Name;
             //this.Parent = content.Parent;
             this.ParentId = (content.Parent == null) ? -1 : content.Parent.Id;
-            this.Path = content.Path;
+            this.Path = content.Path; 
             //this.Properties = content.Properties;
-            this.Properties = new List<IPublishedProperty>();
-            this.PropertiesDictionary = content.Properties.Select(p => new { p.PropertyTypeAlias, Value = p.Value }).ToDictionary(k => k.PropertyTypeAlias, k => k.Value);
+            this.Properties = content.Properties.Select(p=>new SerializableProperty(p)).ToList<IPublishedProperty>();// new List<IPublishedProperty>();
+            //this.PropertiesDictionary = content.Properties.Select(p => new { p.PropertyTypeAlias, Value = p.Value }).ToDictionary(k => k.PropertyTypeAlias, k => k.Value);
             this.SortOrder = content.SortOrder;
             this.TemplateId = content.TemplateId;
             this.TemplateAlias = content.GetTemplateAlias();

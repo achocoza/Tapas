@@ -45,7 +45,7 @@ namespace Tapas
             if (Data == null)
                 return;
             
-            response.Write(JsonConvert.SerializeObject(Data, new PublishedNodeSerializer(traverseChildren, true, false), new HtmlStringSerializer()));
+            response.Write(JsonConvert.SerializeObject(Data, new PublishedPropertySerializer(), new PublishedNodeSerializer(traverseChildren, true, false), new HtmlStringSerializer()));
             
         }
     }

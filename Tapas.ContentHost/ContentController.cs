@@ -57,7 +57,7 @@ namespace Tapas
 
         public object GetNode(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).AsPortableNode(false);
+            return Umbraco.TypedContent(id ?? -1).AsJObject(false);
         }
         public object GetNode(string url)
         {
@@ -65,7 +65,7 @@ namespace Tapas
         }
         public object GetParent(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).Parent.AsPortableNode(false);
+            return Umbraco.TypedContent(id ?? -1).Parent.AsJObject(false);
         }
         public object GetParent(string url)
         {
@@ -74,7 +74,7 @@ namespace Tapas
 
         public object GetChildren(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).Children.Select(t => t.AsPortableNode(false));
+            return Umbraco.TypedContent(id ?? -1).Children.Select(t => t.AsJObject(false));
         }
         public object GetChildren(string url)
         {
@@ -82,7 +82,7 @@ namespace Tapas
         }
         public object GetTree(int? id = -1)
         {
-            return Umbraco.TypedContent(id ?? -1).AsPortableNode(true);
+            return Umbraco.TypedContent(id ?? -1).AsJObject(true);
         }
         public object GetTree(string url)
         {
@@ -98,7 +98,7 @@ namespace Tapas
         }
         public object GetAncestors(int? id = -1)
         {
-            return umbracoWeb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).Select(t => t.AsPortableNode(false));
+            return umbracoWeb.PublishedContentExtensions.Ancestors(Umbraco.TypedContent(id ?? -1)).AsJArray(false);
         }
         public object GetAncestors(string url)
         {
@@ -106,7 +106,7 @@ namespace Tapas
         }
         public object GetDescendantsOrSelf(int? id = -1)
         {
-            return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).Select(t => t.AsPortableNode(false));
+            return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJArray(false);
         }
         public object GetDescendantsOrSelf(string url)
         {
@@ -121,14 +121,14 @@ namespace Tapas
         {
             return GetTreeSafe(umbraco.uQuery.GetNodeIdByUrl(url));
         }
-        public object GetDescendantsOrSelfSafe(int? id = -1)
-        {
-            return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJArray(false);
-        }
-        public object GetDescendantsOrSelfSafe(string url)
-        {
-            return GetDescendantsOrSelfSafe(umbraco.uQuery.GetNodeIdByUrl(url));
-        }
+        //public object GetDescendantsOrSelfSafe(int? id = -1)
+        //{
+        //    return umbracoWeb.PublishedContentExtensions.DescendantsOrSelf(Umbraco.TypedContent(id ?? -1)).AsJArray(false);
+        //}
+        //public object GetDescendantsOrSelfSafe(string url)
+        //{
+        //    return GetDescendantsOrSelfSafe(umbraco.uQuery.GetNodeIdByUrl(url));
+        //}
 
     }
 
