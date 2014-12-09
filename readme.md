@@ -25,6 +25,8 @@ See also http://joeriks-blog.azurewebsites.net/archive/a-prerelease-of-a-new-ver
 
 	install-package Our.Umbraco.TapasClient
 
+See the wiki for how to set up your MVC project (its very easy)
+
 
 ##Version history##
 
