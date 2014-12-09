@@ -1,6 +1,6 @@
 A simple api for published Umbraco (6 and 7) content. Made for Ajax queries or use from an external MVC application.
 
-**Host your content on your Umbraco site - install Umbraco host nuget (or install the umbraco package from our.)**
+**Host your content on your Umbraco site - install host nuget (or install the package from http://our.umbraco.org/projects/backoffice-extensions/tapas-json-api-for-published-content)**
 
 	install-package Our.Umbraco.Tapas
 
