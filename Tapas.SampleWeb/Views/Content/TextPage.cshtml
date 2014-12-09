@@ -20,6 +20,13 @@
     </p>
 
     <ul>
+        @foreach (var p in Model.PropertiesDictionary)
+        {
+            <li>@p.Key = @p.Value</li>
+        }
+    </ul>
+
+    <ul>
         @foreach (var c in Model.Children)
         {
             <li><a href="@c.Url">@c.Name</a></li>
