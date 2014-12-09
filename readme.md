@@ -1,21 +1,12 @@
 A simple api for published Umbraco (6 and 7) content. Made for Ajax queries or use from an external MVC application.
 
-Read the wiki for information about usage.
-
-See also http://joeriks-blog.azurewebsites.net/archive/a-prerelease-of-a-new-version-of-tapas-an-api-for-published-umbraco-content/
-
-**Nuget Umbraco host binaries**
+**Host your content on your Umbraco site - install Umbraco host nuget (or install the umbraco package from our.)**
 
 	install-package Our.Umbraco.Tapas
-
-**Nuget MVC client binaries**
-
-	install-package Our.Umbraco.TapasClient
 
 **Then try it on your site with your browser js console:**
 
 	$.getJSON("/umbraco/tapas/content/getnode?url=/").done(function(data){console.log(data);})
-
 
 **Get all nodes as an array:**
 
@@ -24,6 +15,15 @@ See also http://joeriks-blog.azurewebsites.net/archive/a-prerelease-of-a-new-ver
 **Then all nodes as a tree:**
 
 	$.getJSON("/umbraco/tapas/content/gettree?url=/").done(function(data){console.log(data);})
+
+Read the wiki for detailed information about usage.
+
+See also http://joeriks-blog.azurewebsites.net/archive/a-prerelease-of-a-new-version-of-tapas-an-api-for-published-umbraco-content/
+
+
+**(Beta) If you like to get your Umbraco content from a vanilla MVC site - use the MVC client binaries**
+
+	install-package Our.Umbraco.TapasClient
 
 
 ##Version history##
