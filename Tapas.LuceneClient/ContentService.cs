@@ -9,22 +9,32 @@ using System.Threading.Tasks;
 
 namespace Tapas.LuceneClient
 {
-    public class Search
+    public class ContentService
     {
         public static IndexSearcher Searcher { get; set; }
-
-        public static void InitializeSearcher(string path)
+        private static string indexPath;
+        public static void Initialize(string path)
         {
+            indexPath = path;
             //state the file location of the index
             var indexFileLocation = new System.IO.DirectoryInfo(path);
             Lucene.Net.Store.Directory dir = Lucene.Net.Store.FSDirectory.Open(indexFileLocation);
-
             //create an index searcher that will perform the search
             Searcher = new
             Lucene.Net.Search.IndexSearcher(dir);
+            
         }
+        public static void ReInitialize()
+        {
+            Searcher.Dispose();
+            var indexFileLocation = new System.IO.DirectoryInfo(indexPath);
+            Lucene.Net.Store.Directory dir = Lucene.Net.Store.FSDirectory.Open(indexFileLocation);
+            //create an index searcher that will perform the search
+            Searcher = new
+            Lucene.Net.Search.IndexSearcher(dir);
 
-        public static PortableNode FindBy(string fieldName, string value)
+        }
+        public static PortableNode GetBy(string fieldName, string value)
         {
             //build a query object
             Lucene.Net.Index.Term searchTerm = new Lucene.Net.Index.Term(fieldName, value);
@@ -40,7 +50,7 @@ namespace Tapas.LuceneClient
 
             return null;
         }
-        public static List<PortableNode> FindAllBy(string fieldName, string value)
+        public static List<PortableNode> GetAllBy(string fieldName, string value)
         {
             //build a query object
             Lucene.Net.Index.Term searchTerm = new Lucene.Net.Index.Term(fieldName, value);
@@ -56,23 +66,21 @@ namespace Tapas.LuceneClient
 
             return null;
         }
-
-        public static PortableNode FindByUrl(string url)
+        public static PortableNode GetByUrl(string url)
         {
-            return FindBy("Url", url);
+            return GetBy("Url", url);
         }
-        public static PortableNode FindByName(string name)
+        public static PortableNode GetByName(string name)
         {
-            return FindBy("Name", name.ToLower());
+            return GetBy("Name", name.ToLower());
         }
-
-        public static PortableNode FindById(int Id)
+        public static PortableNode GetById(int Id)
         {
-            return FindBy("Id", Id.ToString());
+            return GetBy("Id", Id.ToString());
         }
-        public static List<PortableNode> FindByParentId(int Id)
+        public static List<PortableNode> GetByParentId(int Id)
         {
-            return FindAllBy("ParentId", Id.ToString());
+            return GetAllBy("ParentId", Id.ToString());
         }
     }
 }

@@ -10,15 +10,15 @@ namespace Tapas.LuceneClient
     {
         public PortableNode Parent(PortableNode node)
         {
-            return Search.FindById(node.ParentId);
+            return ContentService.GetById(node.ParentId);
         }
         public List<PortableNode> Children(PortableNode node)
         {
-            return Search.FindByParentId(node.Id);
+            return ContentService.GetByParentId(node.Id);
         }
         public List<PortableNode> Siblings(PortableNode node)
         {
-            return Search.FindByParentId(node.ParentId);
+            return ContentService.GetByParentId(node.ParentId);
         }
     }
 }
