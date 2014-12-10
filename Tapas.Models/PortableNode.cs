@@ -25,6 +25,7 @@ namespace Tapas
             //this.Children = new List<PortableNode>();
             //this.ContentSet = new List<PortableNode>();
             this.Properties = new List<object>();
+            this.PropertiesDictionary = new Dictionary<string, object>();
         }
         public IEnumerable<PortableNode> Children
         {

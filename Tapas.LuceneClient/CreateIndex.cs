@@ -89,20 +89,34 @@ namespace Tapas.LuceneClient
                     Lucene.Net.Documents.Field.Index.ANALYZED,
                     Lucene.Net.Documents.Field.TermVector.YES
                 ));
+            var createIdField = new Func<string, string, Field>((key, value) => new Field(
+                    key,
+                    value,
+                    Lucene.Net.Documents.Field.Store.YES,
+                    Lucene.Net.Documents.Field.Index.NOT_ANALYZED,
+                    Lucene.Net.Documents.Field.TermVector.YES
+                ));
 
             var doc = new Lucene.Net.Documents.Document();
 
             var addStringField = new Action<string, string>((key, value) =>
             {
-                doc.Add(createStringField(key, value));
+                doc.Add(createStringField(key, value ?? ""));
             });
 
             // convert to objects?
             var addObjectField = new Action<string, object>((key, value) =>
             {
-                doc.Add(createStringField(key, value.ToString()));
+                var valueAsString = (value != null) ? value.ToString() : "";
+                doc.Add(createStringField(key, valueAsString));
             });
 
+            // convert to objects?
+            var addIdField = new Action<string, object>((key, value) =>
+            {
+                var valueAsString = (value != null) ? value.ToString() : "";
+                doc.Add(createIdField(key, valueAsString));
+            });
 
             addStringField("Url", portableNode.Url);
             addStringField("Name", portableNode.Name);
@@ -116,7 +130,9 @@ namespace Tapas.LuceneClient
             addObjectField("CreateDate", portableNode.CreateDate);
             addObjectField("CreatorId", portableNode.CreatorId);
             addObjectField("DocumentTypeId", portableNode.DocumentTypeId);
-            addObjectField("Id", portableNode.Id);
+
+            addIdField("Id", portableNode.Id);
+            
             addObjectField("IsDraft", portableNode.IsDraft);
             addObjectField("Level", portableNode.Level);
             addObjectField("ParentId", portableNode.ParentId);
@@ -140,7 +156,7 @@ namespace Tapas.LuceneClient
     {
         public static string Path { get; set; }
 
-        public void AddNodeToIndex(PortableNode portableNode)
+        public static void AddNodeToIndex(PortableNode portableNode)
         {
 
             //state the file location of the index
@@ -158,48 +174,49 @@ namespace Tapas.LuceneClient
 
                     var doc = Converters.ConvertToDocument(portableNode);
                     //write the document to the index
+                    
                     indexWriter.AddDocument(doc);
 
                     //optimize and close the writer
                     indexWriter.Optimize();
-                    indexWriter.Close();
+                    indexWriter.Dispose();
                 }
             }
         }
-        public CreateIndex(string path)
-        {
-            //state the file location of the index
-            var indexFileLocation = new System.IO.DirectoryInfo(path);
-            Lucene.Net.Store.Directory dir = Lucene.Net.Store.FSDirectory.Open(indexFileLocation);
+        //public CreateIndex(string path)
+        //{
+        //    //state the file location of the index
+        //    var indexFileLocation = new System.IO.DirectoryInfo(path);
+        //    Lucene.Net.Store.Directory dir = Lucene.Net.Store.FSDirectory.Open(indexFileLocation);
 
-            //create an analyzer to process the text
-            Lucene.Net.Analysis.Analyzer analyzer = new Lucene.Net.Analysis.Standard.StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
+        //    //create an analyzer to process the text
+        //    Lucene.Net.Analysis.Analyzer analyzer = new Lucene.Net.Analysis.Standard.StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
 
-            //create the index writer with the directory and analyzer defined.
-            Lucene.Net.Index.IndexWriter indexWriter = new
-            Lucene.Net.Index.IndexWriter(dir, analyzer, Lucene.Net.Index.IndexWriter.MaxFieldLength.UNLIMITED);
+        //    //create the index writer with the directory and analyzer defined.
+        //    Lucene.Net.Index.IndexWriter indexWriter = new
+        //    Lucene.Net.Index.IndexWriter(dir, analyzer, Lucene.Net.Index.IndexWriter.MaxFieldLength.UNLIMITED);
 
-            //create a document, add in a single field
-            Lucene.Net.Documents.Document doc = new
-            Lucene.Net.Documents.Document();
+        //    //create a document, add in a single field
+        //    Lucene.Net.Documents.Document doc = new
+        //    Lucene.Net.Documents.Document();
 
-            Lucene.Net.Documents.Field fldContent =
-              new Lucene.Net.Documents.Field("content",
-              "The quick brown fox jumps over the lazy dog",
-              Lucene.Net.Documents.Field.Store.YES,
-            Lucene.Net.Documents.Field.Index.ANALYZED,
-            Lucene.Net.Documents.Field.TermVector.YES);
+        //    Lucene.Net.Documents.Field fldContent =
+        //      new Lucene.Net.Documents.Field("content",
+        //      "The quick brown fox jumps over the lazy dog",
+        //      Lucene.Net.Documents.Field.Store.YES,
+        //    Lucene.Net.Documents.Field.Index.ANALYZED,
+        //    Lucene.Net.Documents.Field.TermVector.YES);
 
-            doc.Add(fldContent);
+        //    doc.Add(fldContent);
 
-            //write the document to the index
-            indexWriter.AddDocument(doc);
+        //    //write the document to the index
+        //    indexWriter.AddDocument(doc);
 
-            //optimize and close the writer
-            indexWriter.Optimize();
-            indexWriter.Close();
+        //    //optimize and close the writer
+        //    indexWriter.Optimize();
+        //    indexWriter.Close();
 
-        }
+        //}
     }
 
 }
