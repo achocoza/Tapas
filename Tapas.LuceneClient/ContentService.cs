@@ -108,11 +108,10 @@ namespace Tapas.LuceneClient
             Lucene.Net.Search.Query query = new Lucene.Net.Search.TermQuery(searchTerm);
             ContentService.Searcher.Manager.DeleteDocuments(query);
         }
-
-
         public static void Dispose()
         {
             Searcher.Dispose();
         }
+
     }
 }

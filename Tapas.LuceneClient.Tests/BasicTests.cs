@@ -5,7 +5,7 @@ using System.Linq;
 namespace Tapas.LuceneClient.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class BasicTests
     {
         [TestMethod]
         public void CreateIndexTest()
@@ -56,10 +56,10 @@ namespace Tapas.LuceneClient.Tests
 
             var home = ContentService.GetByUrl(@"/");
 
-
             Assert.AreEqual("Home", home.Name);
             Assert.AreEqual("Foo", foo1.Name);
-
+            
+            // cruical to dispose otherwise the index will be corrupted
             ContentService.Dispose();
         }
 
@@ -102,21 +102,6 @@ namespace Tapas.LuceneClient.Tests
             
             ContentService.Dispose();
         }
-
-        [TestMethod]
-        public void WalkerTests()
-        {
-            ContentService.Initialize(@"C:\admin\indexThree");
-            var foo1 = ContentService.GetById(2);
-            Assert.AreEqual(2, foo1.Id);
-
-            var parent = foo1.Parent;
-            Assert.AreEqual("Home", parent.Name);
-
-            var children = parent.Children;
-
-            Assert.AreEqual(2, children.Count());
-
-        }
+        
     }
 }
