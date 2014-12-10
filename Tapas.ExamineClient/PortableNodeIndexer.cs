@@ -10,21 +10,15 @@ namespace Tapas.ExamineClient
 {
     public class PortableNodeIndexer : LuceneIndexer
     {
-
         protected override void PerformIndexAll(string type)
         {
-
-            var nodes = new List<XElement>();
-
-
-            AddNodesToIndex(null, "PortableNodeIndexer");
-
-            throw new NotImplementedException();
+            var content = ContentService.NodeCollection.RemoteContent.GetRemoteContent("/").Select(t => t.ToXElement());
+            AddNodesToIndex(content, "PortableNodeIndexer");
         }
 
         protected override void PerformIndexRebuild()
         {
-            throw new NotImplementedException();
+            IndexAll("PortableNodeIndexer");
         }
     }
 }

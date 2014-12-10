@@ -21,7 +21,7 @@ namespace Tapas.SampleWeb
 
             // This project has no dependency to Umbraco at all.
 
-            ContentService.InitializeCurrent("http://localhost:43896/");
+            ContentService.Initialize("http://localhost:43896/","/");
 
             RouteTable.Routes.MapRoute(
                 name: "Default",

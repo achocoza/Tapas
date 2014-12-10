@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Tapas.Helpers;
+using Tapas;
 using System.Collections.Generic;
 
 namespace Tapas.ContentApi.Tests
