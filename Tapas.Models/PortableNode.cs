@@ -8,7 +8,8 @@ using Umbraco.Core.Models;
 
 namespace Tapas
 {
-    
+
+    [Serializable]
     public class PortableNode
     {
         private PortableNodeCollection portableNodeCollection;

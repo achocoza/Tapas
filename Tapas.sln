@@ -33,6 +33,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.ExamineClient", "Tapa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.ContentService", "Tapas.ContentService\Tapas.ContentService.csproj", "{E2B5C261-F001-4BA1-B20B-762C9D26596E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.OrigoDbClient", "Tapas.OrigoDbClient\Tapas.OrigoDbClient.csproj", "{B56A14D1-AD45-41F6-8B12-8F0B81F01786}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.OrigoDbClient.Tests", "Tapas.OrigoDbClient.Tests\Tapas.OrigoDbClient.Tests.csproj", "{3C37D55D-56FC-4817-B330-98539D754878}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.LuceneClient", "Tapas.LuceneClient\Tapas.LuceneClient.csproj", "{96796E7C-A8AC-483B-90F6-8358B9A7997E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +77,18 @@ Global
 		{E2B5C261-F001-4BA1-B20B-762C9D26596E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2B5C261-F001-4BA1-B20B-762C9D26596E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2B5C261-F001-4BA1-B20B-762C9D26596E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B56A14D1-AD45-41F6-8B12-8F0B81F01786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B56A14D1-AD45-41F6-8B12-8F0B81F01786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B56A14D1-AD45-41F6-8B12-8F0B81F01786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B56A14D1-AD45-41F6-8B12-8F0B81F01786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C37D55D-56FC-4817-B330-98539D754878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C37D55D-56FC-4817-B330-98539D754878}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C37D55D-56FC-4817-B330-98539D754878}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C37D55D-56FC-4817-B330-98539D754878}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96796E7C-A8AC-483B-90F6-8358B9A7997E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96796E7C-A8AC-483B-90F6-8358B9A7997E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96796E7C-A8AC-483B-90F6-8358B9A7997E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96796E7C-A8AC-483B-90F6-8358B9A7997E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
