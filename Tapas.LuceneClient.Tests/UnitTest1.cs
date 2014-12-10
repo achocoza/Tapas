@@ -32,25 +32,34 @@ namespace Tapas.LuceneClient.Tests
             });
 
         }
+
         [TestMethod]
-        public void SearchTest()
+        public void Delete()
+        {
+            CreateIndex.Path = @"C:\admin\indexThree"; 
+            CreateIndex.DeleteAllIndexed();
+        }
+        [TestMethod]
+        public void FindTests()
         {
             Search.InitializeSearcher(@"C:\admin\indexThree");
-            var foo1 = Search.SearchById(2);
+            var foo1 = Search.FindById(2);
             Assert.AreEqual(2, foo1.Id);
 
-            var foo2 = Search.SearchById(3);
+            var foo2 = Search.FindById(3);
             Assert.AreEqual(3, foo2.Id);
 
-            //var fooName = Search.SearchByName("Foo");
-            //Assert.AreEqual(fooName.Id, 2);
+            var fooName = Search.FindByName("foo");
+            Assert.AreEqual(fooName.Id, 2);
 
-
-            var foo3 = Search.SearchByUrl("X");
+            var foo3 = Search.FindByUrl("X");
             Assert.AreEqual(3, foo3.Id);
 
-            var foo4 = Search.SearchByUrl(@"/Foo");
-            var home = Search.SearchByUrl(@"/");
+            var foo4 = Search.FindByUrl(@"/Foo");
+            Assert.AreEqual("/Foo", foo4.Url);
+
+            var home = Search.FindByUrl(@"/");
+
 
             Assert.AreEqual("Home", home.Name);
             Assert.AreEqual("Foo", foo1.Name);

@@ -12,14 +12,21 @@ namespace Tapas
     [Serializable]
     public class PortableNode
     {
-        private PortableNodeCollection portableNodeCollection;
-        public PortableNodeCollection PortableNodeCollection
-        {
-            set
-            {
-                portableNodeCollection = value;
+        private IPortableNodeWalker portableNodeWalker;
+        public IPortableNodeWalker PortableNodeWalker{
+            set {
+                portableNodeWalker = value;
             }
         }
+
+        //private PortableNodeCollection portableNodeCollection;
+        //public PortableNodeCollection PortableNodeCollection
+        //{
+        //    set
+        //    {
+        //        portableNodeCollection = value;
+        //    }
+        //}
         public PortableNode()
         {
             //this.Children = new List<PortableNode>();
@@ -31,7 +38,9 @@ namespace Tapas
         {
             get
             {
-                if (portableNodeCollection != null) return portableNodeCollection.PortableNodes.Where(n => n.ParentId == Id);
+                if (portableNodeWalker != null) return portableNodeWalker.Children(this);
+
+                //if (portableNodeCollection != null) return portableNodeCollection.PortableNodes.Where(n => n.ParentId == Id);
                 return new List<PortableNode>();
             }
         }
@@ -39,7 +48,8 @@ namespace Tapas
         {
             get
             {
-                if (portableNodeCollection != null) return portableNodeCollection.PortableNodes.Where(n => n.ParentId == ParentId);
+                if (portableNodeWalker != null) return portableNodeWalker.Siblings(this);
+                //if (portableNodeCollection != null) return portableNodeCollection.PortableNodes.Where(n => n.ParentId == ParentId);
                 return new List<PortableNode>();
             }
         }
@@ -75,7 +85,8 @@ namespace Tapas
         {
             get
             {
-                if (portableNodeCollection != null) return portableNodeCollection.PortableNodes.SingleOrDefault(p => p.Id == ParentId);
+                if (portableNodeWalker != null) return portableNodeWalker.Parent(this);
+                //if (portableNodeCollection != null) return portableNodeCollection.PortableNodes.SingleOrDefault(p => p.Id == ParentId);
                 return null;
             }
         }

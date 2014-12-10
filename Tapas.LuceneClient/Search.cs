@@ -23,17 +23,12 @@ namespace Tapas.LuceneClient
             Searcher = new
             Lucene.Net.Search.IndexSearcher(dir);
         }
-        public static PortableNode SearchByUrl(string url)
+
+        public static PortableNode FindBy(string fieldName, string value)
         {
-
             //build a query object
-            Lucene.Net.Index.Term searchTerm = new Lucene.Net.Index.Term("Url", url);
+            Lucene.Net.Index.Term searchTerm = new Lucene.Net.Index.Term(fieldName, value);
             Lucene.Net.Search.Query query = new Lucene.Net.Search.TermQuery(searchTerm);
-
-
-            //TermQuery tq = new TermQuery(new Term("Url",url));
-            //BooleanQuery bq = new BooleanQuery();
-            //bq.Add(tq, Occur.MUST);
 
             TopScoreDocCollector collector = TopScoreDocCollector.Create(1, true);
 
@@ -41,61 +36,43 @@ namespace Tapas.LuceneClient
             Searcher.Search(query, collector);
             ScoreDoc[] hits = collector.TopDocs().ScoreDocs;
 
-            //iterate over the results.
-            for (int i = 0; i < hits.Length; i++)
-            {
-                Document doc = Searcher.IndexReader.Document(hits[i].Doc);
-                return Converters.ConvertToPortableNode(doc);
-            }
+            if (hits.Length == 1) return Converters.ConvertToPortableNode(Searcher.IndexReader.Document(hits[0].Doc));
+
             return null;
         }
-        public static PortableNode SearchByName(string name)
+        public static List<PortableNode> FindAllBy(string fieldName, string value)
         {
-
             //build a query object
-            Lucene.Net.Index.Term searchTerm = new Lucene.Net.Index.Term("Name", name);
+            Lucene.Net.Index.Term searchTerm = new Lucene.Net.Index.Term(fieldName, value);
             Lucene.Net.Search.Query query = new Lucene.Net.Search.TermQuery(searchTerm);
 
-
-            //TermQuery tq = new TermQuery(new Term("Url",url));
-            //BooleanQuery bq = new BooleanQuery();
-            //bq.Add(tq, Occur.MUST);
-
-            TopScoreDocCollector collector = TopScoreDocCollector.Create(1, true);
+            TopScoreDocCollector collector = TopScoreDocCollector.Create(1000, true);
 
             //execute the query
             Searcher.Search(query, collector);
             ScoreDoc[] hits = collector.TopDocs().ScoreDocs;
+            if (hits != null)
+                return hits.Select(t => Searcher.IndexReader.Document(t.Doc)).Select(t => Converters.ConvertToPortableNode(t)).ToList();
 
-            //iterate over the results.
-            for (int i = 0; i < hits.Length; i++)
-            {
-                Document doc = Searcher.IndexReader.Document(hits[i].Doc);
-                return Converters.ConvertToPortableNode(doc);
-            }
             return null;
         }
-        public static PortableNode SearchById(int Id)
+
+        public static PortableNode FindByUrl(string url)
         {
+            return FindBy("Url", url);
+        }
+        public static PortableNode FindByName(string name)
+        {
+            return FindBy("Name", name.ToLower());
+        }
 
-            //build a query object
-            Lucene.Net.Index.Term searchTerm = new Lucene.Net.Index.Term("Id", Id.ToString());
-            Lucene.Net.Search.Query query = new Lucene.Net.Search.TermQuery(searchTerm);
-
-            TopScoreDocCollector collector = TopScoreDocCollector.Create(3, true);
-
-
-            //execute the query
-            Searcher.Search(query, collector);
-            ScoreDoc[] hits = collector.TopDocs().ScoreDocs;
-
-            //iterate over the results.
-            for (int i = 0; i < hits.Length; i++)
-            {
-                Document doc = Searcher.IndexReader.Document(hits[i].Doc);
-                return Converters.ConvertToPortableNode(doc);
-            }
-            return null;
+        public static PortableNode FindById(int Id)
+        {
+            return FindBy("Id", Id.ToString());
+        }
+        public static List<PortableNode> FindByParentId(int Id)
+        {
+            return FindAllBy("ParentId", Id.ToString());
         }
     }
 }

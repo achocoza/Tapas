@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateIndex.cs" />
+    <Compile Include="LucenePortableNodeWalker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Search.cs" />
   </ItemGroup>

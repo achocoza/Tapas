@@ -18,6 +18,8 @@ namespace Tapas.LuceneClient
         {
             var node = new PortableNode();
 
+            node.PortableNodeWalker = new LucenePortableNodeWalker();
+
             var getStringField = new Func<string, string>((key) =>
             document.GetField(key).StringValue);
 
@@ -158,6 +160,29 @@ namespace Tapas.LuceneClient
     {
         public static string Path { get; set; }
 
+        public static void DeleteAllIndexed()
+        {
+            //state the file location of the index
+            var indexFileLocation = new System.IO.DirectoryInfo(Path);
+            Lucene.Net.Store.Directory dir = Lucene.Net.Store.FSDirectory.Open(indexFileLocation);
+
+            //create an analyzer to process the text
+            using (Lucene.Net.Analysis.Analyzer analyzer = new Lucene.Net.Analysis.Standard.StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30))
+            {
+
+                //create the index writer with the directory and analyzer defined.
+                using (Lucene.Net.Index.IndexWriter indexWriter = new
+                Lucene.Net.Index.IndexWriter(dir, analyzer, Lucene.Net.Index.IndexWriter.MaxFieldLength.UNLIMITED))
+                {
+
+                    indexWriter.DeleteAll();
+                    indexWriter.Commit();
+                    indexWriter.Optimize();
+                    indexWriter.Dispose();
+                }
+            }
+
+        }
         public static void AddNodeToIndex(PortableNode portableNode)
         {
 
