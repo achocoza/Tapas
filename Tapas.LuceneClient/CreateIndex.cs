@@ -118,9 +118,11 @@ namespace Tapas.LuceneClient
                 doc.Add(createIdField(key, valueAsString));
             });
 
-            addStringField("Url", portableNode.Url);
+            addIdField("Url", portableNode.Url);
+
             addStringField("Name", portableNode.Name);
-            addStringField("Path", portableNode.Path);
+            addIdField("Path", portableNode.Path);
+
             addStringField("CreatorName", portableNode.CreatorName);
             addStringField("DocumentTypeAlias", portableNode.DocumentTypeAlias);
             addStringField("TemplateAlias", portableNode.TemplateAlias);

@@ -44,7 +44,7 @@ namespace Tapas.LuceneClient
             //iterate over the results.
             for (int i = 0; i < hits.Length; i++)
             {
-                Document doc = Searcher.Doc(i);
+                Document doc = Searcher.IndexReader.Document(hits[i].Doc);
                 return Converters.ConvertToPortableNode(doc);
             }
             return null;
@@ -70,7 +70,7 @@ namespace Tapas.LuceneClient
             //iterate over the results.
             for (int i = 0; i < hits.Length; i++)
             {
-                Document doc = Searcher.Doc(i);
+                Document doc = Searcher.IndexReader.Document(hits[i].Doc);
                 return Converters.ConvertToPortableNode(doc);
             }
             return null;

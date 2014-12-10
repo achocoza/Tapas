@@ -37,20 +37,20 @@ namespace Tapas.LuceneClient.Tests
         {
             Search.InitializeSearcher(@"C:\admin\indexThree");
             var foo1 = Search.SearchById(2);
-            Assert.AreEqual(foo1.Id, 2);
-            
-            var foo2 = Search.SearchById(3);
-            Assert.AreEqual(foo2.Id, 3);
+            Assert.AreEqual(2, foo1.Id);
 
-            var fooName = Search.SearchByName("Foo");
-            Assert.AreEqual(fooName.Id, 2);
+            var foo2 = Search.SearchById(3);
+            Assert.AreEqual(3, foo2.Id);
+
+            //var fooName = Search.SearchByName("Foo");
+            //Assert.AreEqual(fooName.Id, 2);
 
 
             var foo3 = Search.SearchByUrl("X");
-            Assert.AreEqual(foo3.Id, 3);
-            
-            var foo4 = Search.SearchByUrl(@"\/Foo");
-            var home = Search.SearchByUrl(@"\/");
+            Assert.AreEqual(3, foo3.Id);
+
+            var foo4 = Search.SearchByUrl(@"/Foo");
+            var home = Search.SearchByUrl(@"/");
 
             Assert.AreEqual("Home", home.Name);
             Assert.AreEqual("Foo", foo1.Name);
