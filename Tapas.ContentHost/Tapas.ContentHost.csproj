@@ -232,6 +232,7 @@
     <Compile Include="ContentDumpController.cs" />
     <Compile Include="AsPortableNodeExtension.cs" />
     <Compile Include="HtmlStringSerializer.cs" />
+    <Compile Include="OnPublishEvent.cs" />
     <Compile Include="PublishedPropertySerializer.cs" />
     <Compile Include="TapasSerializer.cs">
       <SubType>Code</SubType>
