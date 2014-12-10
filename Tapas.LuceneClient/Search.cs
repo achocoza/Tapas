@@ -10,37 +10,60 @@ namespace Tapas.LuceneClient
 {
     public class Search
     {
-        public Search(string path)
-        {
+        public static IndexSearcher Searcher { get; set; }
+
+        public void InitializeSearcher(string path){
             //state the file location of the index
             var indexFileLocation = new System.IO.DirectoryInfo(path);
             Lucene.Net.Store.Directory dir = Lucene.Net.Store.FSDirectory.Open(indexFileLocation);
 
             //create an index searcher that will perform the search
-            Lucene.Net.Search.IndexSearcher searcher = new
+            Searcher = new
             Lucene.Net.Search.IndexSearcher(dir);
+        }
+        public PortableNode SearchByUrl(string url)
+        {
 
             //build a query object
-            Lucene.Net.Index.Term searchTerm =
-              new Lucene.Net.Index.Term("content", "fox");
+            Lucene.Net.Index.Term searchTerm = new Lucene.Net.Index.Term("Url", url);
             Lucene.Net.Search.Query query = new Lucene.Net.Search.TermQuery(searchTerm);
 
-            TopScoreDocCollector collector = TopScoreDocCollector.Create(100, true);
+            TopScoreDocCollector collector = TopScoreDocCollector.Create(1, true);
 
 
             //execute the query
-            searcher.Search(query, collector);
+            Searcher.Search(query, collector);
             ScoreDoc[] hits = collector.TopDocs().ScoreDocs;
 
             //iterate over the results.
             for (int i = 0; i < hits.Length; i++)
             {
-                Document doc = searcher.Doc(i);
-                string contentValue = doc.Get("content");
-
-                Console.WriteLine(contentValue);
-
+                Document doc = Searcher.Doc(i);
+                return Converters.ConvertToPortableNode(doc);
             }
+            return null;
+        }
+        public PortableNode SearchById(int Id)
+        {
+
+            //build a query object
+            Lucene.Net.Index.Term searchTerm = new Lucene.Net.Index.Term("Id", Id.ToString());
+            Lucene.Net.Search.Query query = new Lucene.Net.Search.TermQuery(searchTerm);
+
+            TopScoreDocCollector collector = TopScoreDocCollector.Create(1, true);
+
+
+            //execute the query
+            Searcher.Search(query, collector);
+            ScoreDoc[] hits = collector.TopDocs().ScoreDocs;
+
+            //iterate over the results.
+            for (int i = 0; i < hits.Length; i++)
+            {
+                Document doc = Searcher.Doc(i);
+                return Converters.ConvertToPortableNode(doc);
+            }
+            return null;
         }
     }
 }

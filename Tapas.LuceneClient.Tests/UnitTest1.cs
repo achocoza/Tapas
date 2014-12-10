@@ -7,10 +7,13 @@ namespace Tapas.LuceneClient.Tests
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void CreateIndex()
         {
-
             var x = new CreateIndex(@"C:\admin\index");
+        }
+        [TestMethod]
+        public void Search()
+        {
             var y = new Search(@"C:\admin\index");
         }
     }
