@@ -171,11 +171,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContentController.cs" />
-    <Compile Include="ContentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteContents.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tapas.ContentService\Tapas.ContentService.csproj">
+      <Project>{e2b5c261-f001-4ba1-b20b-762c9d26596e}</Project>
+      <Name>Tapas.ContentService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tapas.Models\Tapas.Models.csproj">
       <Project>{bc32738f-1cde-4e9c-bfb5-651743b3628b}</Project>
       <Name>Tapas.Models</Name>

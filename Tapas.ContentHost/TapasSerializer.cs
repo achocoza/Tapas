@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Umbraco.Core.Models;
 
-namespace Tapas.Helpers
+namespace Tapas
 {
     public class TapasSerializer : Newtonsoft.Json.JsonSerializer
     {

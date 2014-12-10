@@ -34,6 +34,9 @@ namespace Tapas
 
             }
 
+            var t = new TapasSerializer();
+            
+
             System.IO.File.WriteAllText(fileName, JsonConvert.SerializeObject(n, Formatting.Indented));
 
             foreach (var c in n.Children)
