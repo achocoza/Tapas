@@ -59,10 +59,6 @@
       <Project>{96796e7c-a8ac-483b-90f6-8358b9a7997e}</Project>
       <Name>Tapas.LuceneClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Tapas.Models\Tapas.Models.csproj">
-      <Project>{bc32738f-1cde-4e9c-bfb5-651743b3628b}</Project>
-      <Name>Tapas.Models</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -10,8 +10,6 @@ namespace Tapas
     {
         public RemoteContent RemoteContent { get; private set; }
 
-        PortableNodeCollection portableNodeCollection;
-
         public ConnectedNodeCollection(string remoteRootUrl, string remoteContentUrl = "/")
         {
             RemoteContent = new RemoteContent(remoteRootUrl, remoteContentUrl);

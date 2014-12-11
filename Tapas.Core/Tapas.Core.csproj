@@ -7,8 +7,8 @@
     <ProjectGuid>{BC32738F-1CDE-4E9C-BFB5-651743B3628B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tapas.Models</RootNamespace>
-    <AssemblyName>Tapas.Models</AssemblyName>
+    <RootNamespace>Tapas.Core</RootNamespace>
+    <AssemblyName>Tapas.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -193,12 +193,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PortableNodeWalker.cs" />
+    <Compile Include="IPortableNodeManager.cs" />
     <Compile Include="SerializableNode.cs" />
     <Compile Include="PortableNode.cs" />
-    <Compile Include="PortableNodeCollection.cs" />
+    <Compile Include="PortableNodesInMemory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializableProperty.cs" />
+    <Compile Include="WebClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

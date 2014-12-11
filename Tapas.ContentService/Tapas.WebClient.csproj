@@ -46,13 +46,12 @@
   <ItemGroup>
     <Compile Include="ConnectedNodeCollection.cs" />
     <Compile Include="ContentService.cs" />
-    <Compile Include="RemoteContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tapas.Models\Tapas.Models.csproj">
+    <ProjectReference Include="..\Tapas.Models\Tapas.Core.csproj">
       <Project>{bc32738f-1cde-4e9c-bfb5-651743b3628b}</Project>
-      <Name>Tapas.Models</Name>
+      <Name>Tapas.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

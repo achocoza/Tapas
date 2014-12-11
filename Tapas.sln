@@ -25,13 +25,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.ContentHost.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.JsClient", "Tapas.JsClient\Tapas.JsClient.csproj", "{77186FD8-6D34-4114-9E9F-8FF6B88FD1D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.Models", "Tapas.Models\Tapas.Models.csproj", "{BC32738F-1CDE-4E9C-BFB5-651743B3628B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.MvcClient", "Tapas.MvcClient\Tapas.MvcClient.csproj", "{96360806-3390-4F70-BE22-F4EEF995E718}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.ExamineClient", "Tapas.ExamineClient\Tapas.ExamineClient.csproj", "{49B2830E-A960-4834-94FE-062B4EC02BBA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.ContentService", "Tapas.ContentService\Tapas.ContentService.csproj", "{E2B5C261-F001-4BA1-B20B-762C9D26596E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.OrigoDbClient", "Tapas.OrigoDbClient\Tapas.OrigoDbClient.csproj", "{B56A14D1-AD45-41F6-8B12-8F0B81F01786}"
 EndProject
@@ -40,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.LuceneClient", "Tapas.LuceneClient\Tapas.LuceneClient.csproj", "{96796E7C-A8AC-483B-90F6-8358B9A7997E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.LuceneClient.Tests", "Tapas.LuceneClient.Tests\Tapas.LuceneClient.Tests.csproj", "{16CA6396-9BAE-4431-A853-01FB4F8602D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tapas.Core", "Tapas.Core\Tapas.Core.csproj", "{BC32738F-1CDE-4E9C-BFB5-651743B3628B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +61,6 @@ Global
 		{77186FD8-6D34-4114-9E9F-8FF6B88FD1D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77186FD8-6D34-4114-9E9F-8FF6B88FD1D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77186FD8-6D34-4114-9E9F-8FF6B88FD1D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BC32738F-1CDE-4E9C-BFB5-651743B3628B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC32738F-1CDE-4E9C-BFB5-651743B3628B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BC32738F-1CDE-4E9C-BFB5-651743B3628B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BC32738F-1CDE-4E9C-BFB5-651743B3628B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{96360806-3390-4F70-BE22-F4EEF995E718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{96360806-3390-4F70-BE22-F4EEF995E718}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96360806-3390-4F70-BE22-F4EEF995E718}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,10 +69,6 @@ Global
 		{49B2830E-A960-4834-94FE-062B4EC02BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49B2830E-A960-4834-94FE-062B4EC02BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49B2830E-A960-4834-94FE-062B4EC02BBA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2B5C261-F001-4BA1-B20B-762C9D26596E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2B5C261-F001-4BA1-B20B-762C9D26596E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2B5C261-F001-4BA1-B20B-762C9D26596E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2B5C261-F001-4BA1-B20B-762C9D26596E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B56A14D1-AD45-41F6-8B12-8F0B81F01786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B56A14D1-AD45-41F6-8B12-8F0B81F01786}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B56A14D1-AD45-41F6-8B12-8F0B81F01786}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -95,6 +85,10 @@ Global
 		{16CA6396-9BAE-4431-A853-01FB4F8602D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16CA6396-9BAE-4431-A853-01FB4F8602D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16CA6396-9BAE-4431-A853-01FB4F8602D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC32738F-1CDE-4E9C-BFB5-651743B3628B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC32738F-1CDE-4E9C-BFB5-651743B3628B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC32738F-1CDE-4E9C-BFB5-651743B3628B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC32738F-1CDE-4E9C-BFB5-651743B3628B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -54,10 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tapas.Models\Tapas.Models.csproj">
-      <Project>{bc32738f-1cde-4e9c-bfb5-651743b3628b}</Project>
-      <Name>Tapas.Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tapas.OrigoDbClient\Tapas.OrigoDbClient.csproj">
       <Project>{b56a14d1-ad45-41f6-8b12-8f0b81f01786}</Project>
       <Name>Tapas.OrigoDbClient</Name>

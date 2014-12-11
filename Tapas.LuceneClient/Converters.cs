@@ -13,8 +13,6 @@ namespace Tapas.LuceneClient
         {
             var node = new PortableNode();
 
-            node.PortableNodeWalker = new LucenePortableNodeWalker();
-
             var getStringField = new Func<string, string>((key) =>
             document.GetField(key).StringValue);
 

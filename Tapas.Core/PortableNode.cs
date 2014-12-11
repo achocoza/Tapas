@@ -12,13 +12,6 @@ namespace Tapas
     [Serializable]
     public class PortableNode
     {
-        private IPortableNodeWalker portableNodeWalker;
-        public IPortableNodeWalker PortableNodeWalker{
-            set {
-                portableNodeWalker = value;
-            }
-        }
-
         //private PortableNodeCollection portableNodeCollection;
         //public PortableNodeCollection PortableNodeCollection
         //{
@@ -33,25 +26,6 @@ namespace Tapas
             //this.ContentSet = new List<PortableNode>();
             this.Properties = new List<object>();
             this.PropertiesDictionary = new Dictionary<string, object>();
-        }
-        public IEnumerable<PortableNode> Children
-        {
-            get
-            {
-                if (portableNodeWalker != null) return portableNodeWalker.Children(this);
-
-                //if (portableNodeCollection != null) return portableNodeCollection.PortableNodes.Where(n => n.ParentId == Id);
-                return new List<PortableNode>();
-            }
-        }
-        public IEnumerable<PortableNode> ContentSet
-        {
-            get
-            {
-                if (portableNodeWalker != null) return portableNodeWalker.Siblings(this);
-                //if (portableNodeCollection != null) return portableNodeCollection.PortableNodes.Where(n => n.ParentId == ParentId);
-                return new List<PortableNode>();
-            }
         }
 
         [JsonIgnore]
@@ -80,16 +54,7 @@ namespace Tapas
         public object ItemType { get; set; }
         public int Level { get; set; }
         public string Name { get; set; }
-        [JsonIgnore]
-        public PortableNode Parent
-        {
-            get
-            {
-                if (portableNodeWalker != null) return portableNodeWalker.Parent(this);
-                //if (portableNodeCollection != null) return portableNodeCollection.PortableNodes.SingleOrDefault(p => p.Id == ParentId);
-                return null;
-            }
-        }
+        
         public int ParentId { get; set; }
         public string Path { get; set; }
         [JsonIgnore]

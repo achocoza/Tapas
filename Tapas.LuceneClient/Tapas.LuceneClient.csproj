@@ -56,18 +56,14 @@
     <Compile Include="ContentService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tapas.ContentService\Tapas.ContentService.csproj">
-      <Project>{e2b5c261-f001-4ba1-b20b-762c9d26596e}</Project>
-      <Name>Tapas.ContentService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tapas.Models\Tapas.Models.csproj">
-      <Project>{bc32738f-1cde-4e9c-bfb5-651743b3628b}</Project>
-      <Name>Tapas.Models</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tapas.Core\Tapas.Core.csproj">
+      <Project>{bc32738f-1cde-4e9c-bfb5-651743b3628b}</Project>
+      <Name>Tapas.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

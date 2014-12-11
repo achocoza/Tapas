@@ -190,10 +190,6 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tapas.ContentService\Tapas.ContentService.csproj">
-      <Project>{e2b5c261-f001-4ba1-b20b-762c9d26596e}</Project>
-      <Name>Tapas.ContentService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Tapas.MvcClient\Tapas.MvcClient.csproj">
       <Project>{96360806-3390-4f70-be22-f4eef995e718}</Project>
       <Name>Tapas.MvcClient</Name>

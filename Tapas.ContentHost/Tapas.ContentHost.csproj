@@ -247,9 +247,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tapas.Models\Tapas.Models.csproj">
+    <ProjectReference Include="..\Tapas.Core\Tapas.Core.csproj">
       <Project>{bc32738f-1cde-4e9c-bfb5-651743b3628b}</Project>
-      <Name>Tapas.Models</Name>
+      <Name>Tapas.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

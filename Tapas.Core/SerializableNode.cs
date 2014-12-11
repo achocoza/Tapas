@@ -11,14 +11,6 @@ namespace Tapas
     
     public class SerializableNode : IPublishedContent
     {
-        private PortableNodeCollection portableNodeCollection;
-        public PortableNodeCollection PortableNodeCollection
-        {
-            set
-            {
-                portableNodeCollection = value;
-            }
-        }
         public SerializableNode()
         {
             //this.Children = new List<PortableNode>();

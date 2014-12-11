@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tapas.LuceneClient
 {
-    public class LucenePortableNodeWalker : IPortableNodeWalker
+    public class PortableNodeLucene : IPortableNodeManager
     {
         public PortableNode Parent(PortableNode node)
         {
@@ -19,6 +19,46 @@ namespace Tapas.LuceneClient
         public List<PortableNode> Siblings(PortableNode node)
         {
             return ContentService.GetByParentId(node.ParentId);
+        }
+
+        public PortableNode GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PortableNode GetByUrl(string url)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<PortableNode> GetByTypeAlias(string typeAlias)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add(PortableNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(int id, bool throwExceptionIfItsAlreadyMissing = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add(List<PortableNode> portableNodes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }
