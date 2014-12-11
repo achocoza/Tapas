@@ -7,10 +7,25 @@ namespace Tapas.LuceneClient.Tests
     [TestClass]
     public class BasicTests
     {
+
+        [ClassInitialize()]
+        public static void MyClassInitialize(TestContext testContext)
+        {
+            ContentService.Initialize(@"C:\admin\indexThree");
+
+        }
+        [ClassCleanup()]
+        public static void MyClassCleanup()
+        {
+            ContentService.Dispose();
+        }
+
+
         [TestMethod]
         public void CreateIndexTest()
         {
-            ContentService.Initialize(@"C:\admin\indexThree");
+            // times at ~60 ms each (3x) on my machine
+
             ContentService.DeleteAll();
             ContentService.AddNode(new PortableNode
             {
@@ -31,14 +46,14 @@ namespace Tapas.LuceneClient.Tests
                 Name = "x",
                 Id = 3, ParentId =1
             });
-            ContentService.Dispose();
 
         }
 
         [TestMethod]
         public void FindTests()
         {
-            ContentService.Initialize(@"C:\admin\indexThree");
+            // times ~80 ms each on my machine (x6)
+
             var foo1 = ContentService.GetById(2);
             Assert.AreEqual(2, foo1.Id);
 
@@ -59,23 +74,20 @@ namespace Tapas.LuceneClient.Tests
             Assert.AreEqual("Home", home.Name);
             Assert.AreEqual("Foo", foo1.Name);
             
-            // cruical to dispose otherwise the index will be corrupted
-            ContentService.Dispose();
         }
 
 
         [TestMethod]
         public void Delete()
         {
-            ContentService.Initialize(@"C:\admin\indexThree");
             ContentService.DeleteAll();
         }
 
         [TestMethod]
         public void IndexChange()
         {
+            // change and wait makes each operation slow ~400ms each (x2)
 
-            ContentService.Initialize(@"C:\admin\indexThree");
             ContentService.DeleteAll();
 
             ContentService.AddNode(new PortableNode
@@ -100,7 +112,6 @@ namespace Tapas.LuceneClient.Tests
             var foo2 = ContentService.GetById(3);
             Assert.AreEqual("Changed", foo2.Name);
             
-            ContentService.Dispose();
         }
         
     }
