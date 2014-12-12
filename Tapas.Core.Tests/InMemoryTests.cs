@@ -5,7 +5,7 @@ using System.Linq;
 namespace Tapas.Core.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class InMemoryTests
     {
         [TestMethod]
         public void SpinUpAInmemory()

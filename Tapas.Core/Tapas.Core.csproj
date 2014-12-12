@@ -193,7 +193,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IPortableNodeManager.cs" />
+    <Compile Include="PortableNodeManager.cs" />
     <Compile Include="SerializableNode.cs" />
     <Compile Include="PortableNode.cs" />
     <Compile Include="PortableNodesInMemory.cs" />
