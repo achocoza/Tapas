@@ -12,45 +12,6 @@ using Umbraco.Core.Models;
 namespace Tapas
 {
 
-    //public class Serializer
-    //{
-    //    private JsonSerializer jsonSerializer;
-    //    private PublishedNodeSerializer publishedNodeSerializer;
-    //    public Serializer(bool traverseChildren = false, bool excludeProtected = true, bool onlyIncludeNameIdAndUrl = false, params JsonConverter[] additionalConverters)
-    //    {
-    //        jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings());
-    //        publishedNodeSerializer = new PublishedNodeSerializer(traverseChildren, excludeProtected, onlyIncludeNameIdAndUrl);
-    //        jsonSerializer.Converters.Add(publishedNodeSerializer);
-
-    //        foreach (var converter in additionalConverters) jsonSerializer.Converters.Add(converter);
-    //    }
-    //    public JObject AsJObject(IPublishedContent node)
-    //    {
-    //        return publishedNodeSerializer.CreateJObject(node, jsonSerializer);
-    //    }
-    //    public JArray AsJArray(IEnumerable<IPublishedContent> nodes)
-    //    {
-    //        return publishedNodeSerializer.CreateJArray(nodes, jsonSerializer);
-    //    }
-    //}
-
-    //public class PublishedContentContractResolver : DefaultContractResolver
-    //{
-    //    public PublishedContentContractResolver()
-    //    {
-    //    }
-
-    //    protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
-    //    {
-    //        if (typeof(IPublishedContent).IsAssignableFrom(type.GetType()))
-    //        {
-    //            return base.CreateProperties(type, memberSerialization).Where(
-    //                p => !(new[] { "Parent", "Children", "ContentSet" }.Contains(p.PropertyName))).ToList();
-    //        }
-    //        else return base.CreateProperties(type, memberSerialization);
-
-    //    }
-    //}
     public class PublishedNodeSerializer : JsonConverter
     {
         private bool traverseChildren;
@@ -81,42 +42,6 @@ namespace Tapas
             var serializableNode = new SerializableNode(node,traverseChildren);
             return JObject.FromObject(serializableNode);
 
-            //obj.Add("Id", JToken.FromObject(node.Id));
-            //obj.Add("Name", JToken.FromObject(node.Name));
-            //obj.Add("Url", JToken.FromObject(node.Url));
-
-            //var isVisible = true;
-            //if (node.GetProperty("umbracoNaviHide") != null && (bool)node.GetProperty("umbracoNaviHide").Value) isVisible = false;
-
-            //obj.Add("Visible", JToken.FromObject(isVisible));
-
-            //if (!onlyIncludeNameIdAndUrl)
-            //{
-            //    obj.Add("CreateDate", JToken.FromObject(node.CreateDate));
-            //    obj.Add("CreatorId", JToken.FromObject(node.CreatorId));
-            //    obj.Add("Level", JToken.FromObject(node.Level));
-            //    obj.Add("DocumentTypeAlias", JToken.FromObject(node.DocumentTypeAlias));
-            //    var parentId = (node.Parent == null) ? -1 : node.Parent.Id;
-            //    obj.Add("ParentId", parentId);
-            //    obj.Add("Path", JToken.FromObject(node.Path));
-            //    obj.Add("SortOrder", JToken.FromObject(node.SortOrder));
-            //    obj.Add("TemplateId", JToken.FromObject(node.TemplateId));
-            //    obj.Add("UpdateDate", JToken.FromObject(node.UpdateDate));
-            //    obj.Add("UrlName", JToken.FromObject(node.UrlName));
-            //    obj.Add("Version", JToken.FromObject(node.Version));
-            //    obj.Add("WriterId", JToken.FromObject(node.WriterId));
-            //    obj.Add("WriterName", JToken.FromObject(node.WriterName));
-
-            //    var properties = node.Properties.Select(p => new { p.PropertyTypeAlias, Value = p.Value }).ToDictionary(k => k.PropertyTypeAlias, k => (k.Value == null) ? null : JToken.FromObject(k.Value, serializer));
-            //    obj.Add("Properties", JToken.FromObject(properties, serializer));
-            //}
-
-            //if (traverseChildren)
-            //    obj.Add("Children", JToken.FromObject(node.Children, serializer));
-            //else if (!onlyIncludeNameIdAndUrl)
-            //    obj.Add("ChildIds", JToken.FromObject(node.Children.Select(t => t.Id)));
-
-            //return obj;
 
         }
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -124,9 +49,6 @@ namespace Tapas
             if (value == null) return;
 
             var obj = CreateJObject((IPublishedContent)value, serializer);
-
-            //var val = (IPublishedContent)value;
-
 
             obj.WriteTo(writer);
         }
